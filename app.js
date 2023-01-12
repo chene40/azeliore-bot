@@ -1,8 +1,7 @@
 // discord.js node module
 const Discord = require("discord.js");
-
-// Contains the string representing the password/token for the discord bot.
 const { token } = require("./config.json");
+const CurrentBanners = require("./currentBanners.json");
 // Gateway Intents were introduced by Discord so bot developers can choose which events their bot receives based on which data
 // it needs to function. With partials we will be able to receive the full data of the objects returned from each event.
 
@@ -31,7 +30,6 @@ Client.on("ready", (client) => {
   console.log(`This bot is now online: ${client.user.tag}`);
 });
 
-// Logs in the discord bot with the password stored in an external file
 Client.login(token);
 
 Client.on("messageCreate", (message) => {
@@ -41,13 +39,7 @@ Client.on("messageCreate", (message) => {
   }
   console.log("A new message was written");
 
-  const userText = message.content.toLowerCase();
-
-  // only runs this code if the user that wrote the message is not a bot.
-  const user = message.author;
-  if (!message.author.bot) {
-    message.reply(`Hello ${user.username}.`);
-  }
+  const userText = message.content.toLowerCase().split(" ");
 
   // commands
   if (userText === "!commands" || userText === "!help") {
@@ -81,4 +73,11 @@ Client.on("messageCreate", (message) => {
     );
   }
 
+  if (userText[0] === "!banners") {
+    let bannersAvailable = "The current available banners are:\n";
+    Object.keys(CurrentBanners).forEach(
+      (banner, i) => (bannersAvailable += `${i + 1}: ${banner} \n`)
+    );
+    message.reply(bannersAvailable);
+  }
 });

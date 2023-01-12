@@ -1,0 +1,27 @@
+{
+	"Reign Of Serenity": {
+		"Duration": "12/27/2022 - 1/17/2023",
+		"Type": "Event",
+		"Featured 5-Star": "Raiden Shogun",
+		"Featured 4-Star": ["Kujou Sara", "Rosaria", "Sayu"]
+	},
+	"Azure Excursion": {
+		"Duration": "12/27/2022 - 1/17/2023",
+		"Type": "Event",
+		"Featured 5-Star": "Kamisato Ayato",
+		"Featured 4-Star": ["Kujou Sara", "Rosaria", "Sayu"]
+	},
+	"Epitome Invocation": {
+		"Duration": "12/27/2022 - 1/17/2023",
+		"Type": "Event",
+		"Featured 5-Star Weapons": ["Haran Geppaku Futsu", "Engulfing Lightning"],
+		"Featured 4-Star Weapons": ["Akuoumaru", "Mouun's Moon", "Lion's Roar", "Favonius Lance", "Sacrificial Fragments"]
+	},
+	"Beginner's Wish": {
+		"Featured Character": "Noelle",
+		"Type": "Permanent"
+	},
+	"Wanderlust Invocation": {
+		"Type": "Permanent"
+	}
+}
