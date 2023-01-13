@@ -1,5 +1,6 @@
 // discord.js node module
 require("dotenv").config();
+const fs = require("fs");
 const Discord = require("discord.js");
 const CurrentBanners = require("./CurrentBanners.json");
 const mongoose = require("./database/mongoose");
@@ -48,6 +49,28 @@ Client.commands = new Discord.Collection();
 Client.on("ready", (client) => {
   console.log(`This bot is now online: ${client.user.tag}`);
 });
+
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
+
+const eventFiles = fs
+  .readdirSync("./events")
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  Client.commands.set(command.name, command);
+}
+
+for (const file of eventFiles) {
+  const event = require(`./events/${file}`);
+  if (event.once) {
+    Client.once(event.name, (...args) => event.execute(...args, Client));
+  } else {
+    Client.on(event.name, (...args) => event.execute(...args, Client));
+  }
+}
 
 mongoose.init();
 

@@ -4,18 +4,17 @@ const mongoose = require("mongoose");
 module.exports = {
   init: () => {
     const dbOptions = {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
       autoIndex: false,
-      poolSize: 5,
       connectTimeoutMS: 10000,
       family: 4,
     };
 
     mongoose.connect(
-      `mongodb+srv://AzelioreBot:${process.env.PASS}@azeliorebot.kuesm86.mongodb.net/?retryWrites=true&w=majority`
+      `mongodb+srv://AzelioreBot:${process.env.PASS}@azeliorebot.kuesm86.mongodb.net/?retryWrites=true&w=majority`,
+      dbOptions
     );
-    mongoose.set("useFindAndModify", false);
+
     mongoose.Promise = global.Promise;
 
     mongoose.connection.on("connected", () => {
