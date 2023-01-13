@@ -1,7 +1,9 @@
 // discord.js node module
+require("dotenv").config();
 const Discord = require("discord.js");
-const { token } = require("./config.json");
 const CurrentBanners = require("./CurrentBanners.json");
+const mongoose = require("./database/mongoose");
+
 // Gateway Intents were introduced by Discord so bot developers can choose which events their bot receives based on which data
 // it needs to function. With partials we will be able to receive the full data of the objects returned from each event.
 const {
@@ -37,6 +39,8 @@ const Client = new Discord.Client({
   ],
 });
 
+Client.prefix = "!";
+Client.commands = new Discord.Collection();
 // Creating a new client with intents and partials needed for this bot to function
 // Partials make sure that we receive the full data of the object returned from events
 
@@ -45,7 +49,9 @@ Client.on("ready", (client) => {
   console.log(`This bot is now online: ${client.user.tag}`);
 });
 
-Client.login(token);
+mongoose.init();
+
+Client.login(process.env.TOKEN);
 
 // pity initialized at 1
 let wishingResult = "Your results are...\n";
