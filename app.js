@@ -1,9 +1,24 @@
 // discord.js node module
 const Discord = require("discord.js");
 const { token } = require("./config.json");
-const CurrentBanners = require("./currentBanners.json");
+const CurrentBanners = require("./CurrentBanners.json");
 // Gateway Intents were introduced by Discord so bot developers can choose which events their bot receives based on which data
 // it needs to function. With partials we will be able to receive the full data of the objects returned from each event.
+const {
+  CEvent5,
+  CEvent4,
+  CEvent4W,
+  CEvent4C,
+  WEvent5,
+  WEventPromotional,
+  WEvent4,
+  WEvent4W,
+  WEvent4C,
+  Standard5,
+  Standard4,
+  Standard4W,
+  Standard4C,
+} = require("./DropRates.json");
 
 const Client = new Discord.Client({
   intents: [
@@ -39,16 +54,18 @@ Client.on("messageCreate", (message) => {
   }
   console.log("A new message was written");
 
-  const userText = message.content.toLowerCase().split(" ");
+  const userInput = message.content.toLowerCase().split(" ");
+  const userInputText = userInput[0];
+  const userInputNumber = Number(userInput[1]);
 
   // commands
-  if (userText === "!commands" || userText === "!help") {
+  if (userInputText === "!commands" || userInputText === "!help") {
     message.reply(
       "This bot operates on the following commands: !help !commands !age !members"
     );
   }
 
-  if (userText === "!age") {
+  if (userInputText === "!age") {
     message.reply(
       `This server was created on ${new Date(
         message.guild.createdTimestamp
@@ -56,7 +73,7 @@ Client.on("messageCreate", (message) => {
     );
   }
 
-  if (userText === "!members") {
+  if (userInputText === "!members") {
     message.guild.members.fetch().then(
       (value) => {
         value.forEach((user) => {
@@ -73,7 +90,7 @@ Client.on("messageCreate", (message) => {
     );
   }
 
-  if (userText[0] === "!banners") {
+  if (userInputText === "!banners") {
     let bannersAvailable = "The current available banners are:\n";
     Object.keys(CurrentBanners).forEach(
       (banner, i) => (bannersAvailable += `${i + 1}: ${banner} \n`)
