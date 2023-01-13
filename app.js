@@ -47,48 +47,20 @@ Client.on("ready", (client) => {
 
 Client.login(token);
 
+// pity initialized at 1
+let wishingResult = "Your results are...\n";
+let cur5Pity = 1;
+let cur4Pity = 1;
+const SoftPity5 = 73;
+const SoftPity4 = 8;
+
 Client.on("messageCreate", (message) => {
   // only allow non-bots to perform any code execution
-  if (message.author.bot) {
-    return;
-  }
-  console.log("A new message was written");
+  if (message.author.bot) return;
 
   const userInput = message.content.toLowerCase().split(" ");
   const userInputText = userInput[0];
   const userInputNumber = Number(userInput[1]);
-
-  // commands
-  if (userInputText === "!commands" || userInputText === "!help") {
-    message.reply(
-      "This bot operates on the following commands: !help !commands !age !members"
-    );
-  }
-
-  if (userInputText === "!age") {
-    message.reply(
-      `This server was created on ${new Date(
-        message.guild.createdTimestamp
-      )} and channel on ${new Date(message.channel.createdTimestamp)}`
-    );
-  }
-
-  if (userInputText === "!members") {
-    message.guild.members.fetch().then(
-      (value) => {
-        value.forEach((user) => {
-          message.reply(
-            `${user.user.username} has joined this server on ${new Date(
-              user.joinedTimestamp
-            )}`
-          );
-        });
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
 
   if (userInputText === "!banners") {
     let bannersAvailable = "The current available banners are:\n";
@@ -96,5 +68,48 @@ Client.on("messageCreate", (message) => {
       (banner, i) => (bannersAvailable += `${i + 1}: ${banner} \n`)
     );
     message.reply(bannersAvailable);
+  }
+
+  const wish = () => {
+    const roll = Math.random();
+    let dropRate5 =
+      CEvent5 + Math.max(0, (cur5Pity - SoftPity5) * 10 * CEvent5);
+    let dropRate4 =
+      CEvent4 + Math.max(0, (cur4Pity - SoftPity4) * 10 * CEvent4);
+
+    // have a 0.6% probability of getting the 5 star
+    if (roll < dropRate5) {
+      wishingResult += "||5*||\t";
+      cur5Pity = 1; // reset pity
+      cur4Pity++;
+    }
+    // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
+    else if (roll < dropRate4 + dropRate5) {
+      wishingResult += "||4*||\t";
+      cur5Pity++;
+      cur4Pity = 1; // reset pity
+    } else {
+      wishingResult += "||3*||\t";
+      cur5Pity++;
+      cur4Pity++;
+    }
+  };
+
+  const displayResult = () => {
+    message.reply(wishingResult);
+    wishingResult = "Your results are...\n";
+  };
+
+  const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
+  const validNumWishes = userInputNumber === 1 || userInputNumber === 10;
+  const wishing = wantsToWish && validNumWishes;
+
+  if (wishing) {
+    for (let i = 0; i < userInputNumber; i++) wish();
+    displayResult();
+  }
+
+  if (userInputText === "!pity") {
+    message.reply(`Your current pity is ${cur5Pity}`);
   }
 });
