@@ -1,4 +1,4 @@
-// discord.js node module
+// ===== Libraries/API Imports ===== //
 require("dotenv").config();
 const fs = require("fs");
 const {
@@ -9,21 +9,10 @@ const {
 } = require("discord.js");
 const mongoose = require("./database/mongoose");
 const Genshin = require("genshin-api");
-const {
-  CEvent5,
-  CEvent4,
-  CEvent4W,
-  CEvent4C,
-  WEvent5,
-  WEventPromotional,
-  WEvent4,
-  WEvent4W,
-  WEvent4C,
-  Standard5,
-  Standard4,
-  Standard4W,
-  Standard4C,
-} = require("./DropRates.json");
+
+// ===== Local Imports ===== //
+const wish = require("./functions/wish");
+const displayResult = require("./functions/displayResult");
 
 // ===== Declaring Bot GatewayIntentBits and Partials ===== //
 // Creating a new client with intents and partials needed for this bot to function
@@ -87,8 +76,6 @@ mongoose.init();
 let wishingResult = "Your results are...\n";
 let cur5Pity = 1;
 let cur4Pity = 1;
-const SoftPity5 = 73;
-const SoftPity4 = 8;
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return; // only allow non-bots to perform any code execution
@@ -96,6 +83,25 @@ client.on("messageCreate", (message) => {
   const userInput = message.content.toLowerCase().split(" ");
   const userInputText = userInput[0];
   const userInputNumber = Number(userInput[1]);
+
+  if (userInputText === "!pity") {
+    return message.reply(`Your current pity is ${cur5Pity}`);
+  }
+
+  const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
+  const validNumWishes = userInputNumber === 1 || userInputNumber === 10;
+  const wishing = wantsToWish && validNumWishes;
+
+  if (wishing) {
+    for (let i = 0; i < userInputNumber; i++) {
+      result = wish(wishingResult, cur5Pity, cur4Pity);
+      wishingResult = result[0];
+      cur5Pity = result[1];
+      cur4Pity = result[2];
+    }
+    displayResult(message, wishingResult);
+    return;
+  }
 
   if (userInputText.startsWith(client.prefix)) {
     const args = message.content
@@ -109,48 +115,5 @@ client.on("messageCreate", (message) => {
         `There does not exist a command within this bot called ${commandName}.`
       );
     command.run(client, message, args);
-  }
-
-  const wish = () => {
-    const roll = Math.random();
-    let dropRate5 =
-      CEvent5 + Math.max(0, (cur5Pity - SoftPity5) * 10 * CEvent5);
-    let dropRate4 =
-      CEvent4 + Math.max(0, (cur4Pity - SoftPity4) * 10 * CEvent4);
-
-    // have a 0.6% probability of getting the 5 star
-    if (roll < dropRate5) {
-      wishingResult += "||5*||\t";
-      cur5Pity = 1; // reset pity
-      cur4Pity++;
-    }
-    // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
-    else if (roll < dropRate4 + dropRate5) {
-      wishingResult += "||4*||\t";
-      cur5Pity++;
-      cur4Pity = 1; // reset pity
-    } else {
-      wishingResult += "||3*||\t";
-      cur5Pity++;
-      cur4Pity++;
-    }
-  };
-
-  const displayResult = () => {
-    message.reply(wishingResult);
-    wishingResult = "Your results are...\n";
-  };
-
-  const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
-  const validNumWishes = userInputNumber === 1 || userInputNumber === 10;
-  const wishing = wantsToWish && validNumWishes;
-
-  if (wishing) {
-    for (let i = 0; i < userInputNumber; i++) wish();
-    displayResult();
-  }
-
-  if (userInputText === "!pity") {
-    message.reply(`Your current pity is ${cur5Pity}`);
   }
 });
