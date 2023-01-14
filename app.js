@@ -4,6 +4,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const CurrentBanners = require("./CurrentBanners.json");
 const mongoose = require("./database/mongoose");
+const genshin = require("genshin-api");
 
 // Gateway Intents were introduced by Discord so bot developers can choose which events their bot receives based on which data
 // it needs to function. With partials we will be able to receive the full data of the objects returned from each event.
