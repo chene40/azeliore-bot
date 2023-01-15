@@ -100,7 +100,7 @@ client.on("messageCreate", (message) => {
       cur5Pity = result[1];
       cur4Pity = result[2];
     }
-    displayResult(message, wishingResult);
+    wishingResult = displayResult(message, wishingResult);
     return;
   }
 
