@@ -70,6 +70,7 @@ for (const file of eventFiles) {
 // ===== Initializes MongoDB ===== //
 mongoose.init();
 
+
 // ===== Declaring and Initializing Global Variables ===== //
 // Will need to configure so every user have their own data within DB
 // Pity initialized at 1
