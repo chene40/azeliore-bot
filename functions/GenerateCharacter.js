@@ -19,9 +19,14 @@ Characters5.forEach((char) => {
 module.exports = (rarity) => {
   if (rarity != 4 && rarity != 5)
     return console.error("Only a 4 star or 5 star character exists!");
-  const numChars = rarity == 4 ? char4List.length : char5List.length;
-  const randN = Math.floor(Math.random() * numChars);
-  const randChar = rarity == 4 ? char4List[randN] : char5List[randN];
+
+  let numChars, randN, randChar;
+  do {
+    numChars = rarity == 4 ? char4List.length : char5List.length;
+    randN = Math.floor(Math.random() * numChars);
+    randChar = rarity == 4 ? char4List[randN] : char5List[randN];
+  } while (randChar.startsWith("traveler"));
+
   const char = require(`../GenshinData/Characters${rarity}/${randChar}.json`);
   return char.image; // api endpoint to obtain character image
 };
