@@ -70,13 +70,13 @@ for (const file of eventFiles) {
 // ===== Initializes MongoDB ===== //
 mongoose.init();
 
-
 // ===== Declaring and Initializing Global Variables ===== //
 // Will need to configure so every user have their own data within DB
 // Pity initialized at 1
-let wishingResult = "Your results are...\n";
+let wishingResult = [];
 let cur5Pity = 1;
 let cur4Pity = 1;
+
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return; // only allow non-bots to perform any code execution
