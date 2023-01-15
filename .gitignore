@@ -1,2 +1,4 @@
 .env
 node_modules
+GenshinData/Weapons*
+GenshinData/Characters*

@@ -70,6 +70,7 @@ for (const file of eventFiles) {
 // ===== Initializes MongoDB ===== //
 mongoose.init();
 
+
 // ===== Declaring and Initializing Global Variables ===== //
 // Will need to configure so every user have their own data within DB
 // Pity initialized at 1
@@ -99,7 +100,7 @@ client.on("messageCreate", (message) => {
       cur5Pity = result[1];
       cur4Pity = result[2];
     }
-    displayResult(message, wishingResult);
+    wishingResult = displayResult(message, wishingResult);
     return;
   }
 
