@@ -14,8 +14,8 @@ const {
   Standard4C,
 } = require("../DropRates.json");
 
-const genChar = require("./generateChar");
-const genWeap = require("./generateWeapon");
+const GenChar = require("./GenerateCharacter");
+const GenWeapon = require("./GenerateWeapon");
 
 const SoftPity5 = 73;
 const SoftPity4 = 8;
@@ -36,17 +36,17 @@ module.exports = (wishingResult, cur5Pity, cur4Pity) => {
 
   // have a 0.6% probability of getting the 5 star
   if (roll < dropRate5) {
-    wishingResult.push(pullResult(genChar(5)));
+    wishingResult.push(pullResult(GenChar(5)));
     cur5Pity = 1; // reset pity
     cur4Pity++;
   }
   // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
   else if (roll < dropRate4 + dropRate5) {
-    wishingResult.push(pullResult(genChar(4)));
+    wishingResult.push(pullResult(GenChar(4)));
     cur5Pity++;
     cur4Pity = 1; // reset pity
   } else {
-    wishingResult.push(pullResult(genWeap(3)));
+    wishingResult.push(pullResult(GenWeapon(3)));
     cur5Pity++;
     cur4Pity++;
   }

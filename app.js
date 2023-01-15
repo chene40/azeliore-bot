@@ -11,8 +11,8 @@ const mongoose = require("./database/mongoose");
 const Genshin = require("genshin-api");
 
 // ===== Local Imports ===== //
-const wish = require("./functions/wish");
-const displayResult = require("./functions/displayResult");
+const wish = require("./functions/Wish");
+const displayResult = require("./functions/DisplayResults");
 
 // ===== Declaring Bot GatewayIntentBits and Partials ===== //
 // Creating a new client with intents and partials needed for this bot to function
@@ -76,7 +76,6 @@ mongoose.init();
 let wishingResult = [];
 let cur5Pity = 1;
 let cur4Pity = 1;
-
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return; // only allow non-bots to perform any code execution
