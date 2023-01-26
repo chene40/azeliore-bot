@@ -20,13 +20,21 @@ const GenWeapon = require("./GenerateWeapon");
 const SoftPity5 = 73;
 const SoftPity4 = 8;
 
-const pullResult = (data, rarity) => {
+const pullResult = (data, rarity, char) => {
   const name = data.split("/")[4];
+
+  const path = `../GenshinData/${
+    char ? "Characters" : "Weapons"
+  }${rarity}/${name}.json`;
+
+  const file = require(path);
+
   return {
+    apiData: file,
     attachment: data,
-    name: `${name}.jpg`,
     description: `${name}'s splash art.`,
     rarity: rarity,
+    char: char,
   };
 };
 
@@ -37,17 +45,17 @@ module.exports = (wishingResult, cur5Pity, cur4Pity) => {
 
   // have a 0.6% probability of getting the 5 star
   if (roll < dropRate5) {
-    wishingResult.push(pullResult(GenChar(5), 5));
+    wishingResult.push(pullResult(GenChar(5), 5, (char = true)));
     cur5Pity = 1; // reset pity
     cur4Pity++;
   }
   // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
   else if (roll < dropRate4 + dropRate5) {
-    wishingResult.push(pullResult(GenChar(4), 4));
+    wishingResult.push(pullResult(GenChar(4), 4, (char = true)));
     cur5Pity++;
     cur4Pity = 1; // reset pity
   } else {
-    wishingResult.push(pullResult(GenWeapon(3), 3));
+    wishingResult.push(pullResult(GenWeapon(3), 3, (char = false)));
     cur5Pity++;
     cur4Pity++;
   }
