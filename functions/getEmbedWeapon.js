@@ -20,10 +20,13 @@ module.exports = (
   },
   url
 ) => {
+  console.log(
+    `https://genshin-impact.fandom.com/wiki/${name.replace(/ /g, "_")}`
+  );
   return new EmbedBuilder()
     .setColor(0x0099ff)
     .setTitle(name)
-    .setURL("https://genshin-impact.fandom.com/wiki/Weapon/List")
+    .setURL(`https://genshin-impact.fandom.com/wiki/${name.replace(/ /g, "_")}`)
     .setAuthor({
       name: "Weapon",
       iconURL: iconUrlTop,
