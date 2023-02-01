@@ -51,7 +51,15 @@ module.exports = (wishingResult, cur5Pity, cur4Pity) => {
   }
   // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
   else if (roll < dropRate4 + dropRate5) {
-    wishingResult.push(pullResult(GenChar(4), 4, (char = true)));
+    const getChar = Math.round(Math.random());
+
+    const res = pullResult(
+      getChar ? GenChar(4) : GenWeapon(4),
+      4,
+      (char = getChar ? true : false)
+    );
+
+    wishingResult.push(res);
     cur5Pity++;
     cur4Pity = 1; // reset pity
   } else {
