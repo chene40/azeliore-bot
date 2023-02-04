@@ -8,13 +8,11 @@ const {
   Partials,
 } = require("discord.js");
 const mongoose = require("./database/mongoose");
-const Genshin = require("genshin-api");
 const CurrentBanners = require("./CurrentBanners.json");
 
 // ===== Local Imports ===== //
 const wish = require("./functions/Wish");
 const displayResult = require("./functions/DisplayResults");
-
 // ===== Declaring Bot GatewayIntentBits and Partials ===== //
 // Creating a new client with intents and partials needed for this bot to function
 // Partials make sure that we receive the full data of the object returned from events
@@ -69,7 +67,7 @@ for (const file of eventFiles) {
 }
 
 // ===== Initializes MongoDB ===== //
-mongoose.init();
+mongoose.execute();
 
 // ===== Declaring and Initializing Global Variables ===== //
 // Will need to configure so every user have their own data within DB

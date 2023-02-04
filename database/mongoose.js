@@ -1,19 +1,25 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const mongodbURL = process.env.MONGODBURL;
 
 module.exports = {
-  init: () => {
+  name: "mongoose",
+  once: true,
+
+  async execute(client) {
+    if (!mongodbURL) return;
+
     const dbOptions = {
       useUnifiedTopology: true,
       autoIndex: false,
       connectTimeoutMS: 10000,
       family: 4,
+      keepAlive: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     };
 
-    mongoose.connect(
-      `mongodb+srv://AzelioreBot:${process.env.PASS}@azeliorebot.kuesm86.mongodb.net/?retryWrites=true&w=majority`,
-      dbOptions
-    );
+    mongoose.connect(mongodbURL, dbOptions);
 
     mongoose.Promise = global.Promise;
 
