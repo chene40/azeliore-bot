@@ -8,7 +8,6 @@ const {
   Partials,
 } = require("discord.js");
 const mongoose = require("./database/mongoose");
-const CurrentBanners = require("./CurrentBanners.json");
 
 // ===== Local Imports ===== //
 const wish = require("./functions/Wish");
@@ -75,7 +74,6 @@ mongoose.execute();
 let wishingResult = [];
 let cur5Pity = 1;
 let cur4Pity = 1;
-let selectedBanner = "Wanderlust Invocation";
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return; // only allow non-bots to perform any code execution
@@ -86,28 +84,6 @@ client.on("messageCreate", (message) => {
 
   if (userInputText === "!pity") {
     return message.reply(`Your current pity is ${cur5Pity}`);
-  }
-
-  if (userInputText === "!setbanner") {
-    const banners = Object.keys(CurrentBanners);
-    if (userInputNumber > banners.length || userInputNumber < 1) {
-      const currentSelectableBanners =
-        "Use the command: *!currentBanners* to find a list of available banners";
-      message.reply(
-        `To select a banner to wish on, use the command: *!setbanner <number>*\n ${currentSelectableBanners}`
-      );
-    }
-    previousBanner = selectedBanner;
-    selectedBanner = banners[userInputNumber - 1];
-    message.reply(
-      `You have changed your banner selection from **${previousBanner}** to **${selectedBanner}**`
-    );
-    return;
-  }
-
-  if (userInputText === "!selectedbanner") {
-    message.reply(`The banner currently selected is **${selectedBanner}**`);
-    return;
   }
 
   const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
