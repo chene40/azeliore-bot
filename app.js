@@ -82,10 +82,6 @@ client.on("messageCreate", (message) => {
   const userInputText = userInput[0];
   const userInputNumber = Number(userInput[1]);
 
-  if (userInputText === "!pity") {
-    return message.reply(`Your current pity is ${cur5Pity}`);
-  }
-
   const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
   const validNumWishes = userInputNumber === 1 || userInputNumber === 10;
   const wishing = wantsToWish && validNumWishes;

@@ -9,12 +9,13 @@ module.exports.run = async (client, message, args) => {
 
     // default banner selection
     if (!data) {
-      bannerSchema.create({
+      data = {
         UserID: message.author.id,
         UserName: message.author.username,
         selectedBanner: 4,
         selectedBannerName: "Wanderlust Invocation",
-      });
+      };
+      bannerSchema.create(data);
     }
 
     const banners = Object.keys(CurrentBanners);
