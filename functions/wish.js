@@ -56,7 +56,8 @@ module.exports = async (userId, userName) => {
         WeaponBanner5: 1,
         WeaponBanner4: 1,
         WeaponBanner4Uprate: false,
-        Beginner: 1,
+        Beginner5: 1,
+        Beginner4: 1,
         BeginnerAvailable: true,
         Permanent5: 1,
       };
@@ -70,7 +71,7 @@ module.exports = async (userId, userName) => {
         bData = {
           UserID: userId,
           UserName: userName,
-          selectedBanner: 4,
+          selectedBanner: 5,
           selectedBannerName: "Wanderlust Invocation",
         };
       }
@@ -84,6 +85,9 @@ module.exports = async (userId, userName) => {
       } else if (bData.selectedBanner == 3) {
         cur5Pity = pData.WeaponBanner5;
         cur4Pity = pData.WeaponBanner4;
+      } else if (bData.selectedBanner == 4 && pData.BeginnerAvailable) {
+        cur5Pity = pData.Beginner5;
+        cur4Pity = pData.Beginner4;
       } else {
         cur5Pity = pData.Permanent5;
         cur4Pity = pData.Permanent4;

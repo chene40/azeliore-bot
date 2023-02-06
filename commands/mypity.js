@@ -16,7 +16,8 @@ module.exports.run = async (client, message, args) => {
         WeaponBanner5: 1,
         WeaponBanner4: 1,
         WeaponBanner4Uprate: false,
-        Beginner: 1,
+        Beginner5: 1,
+        Beginner4: 1,
         BeginnerAvailable: true,
         Permanent5: 1,
       };

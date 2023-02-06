@@ -8,7 +8,7 @@ module.exports.run = async (client, message, args) => {
       data = {
         UserID: message.author.id,
         UserName: message.author.username,
-        selectedBanner: 4,
+        selectedBanner: 5,
         selectedBannerName: "Wanderlust Invocation",
       };
       bannerSchema.create(data);
