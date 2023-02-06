@@ -14,11 +14,15 @@ const {
   Standard4C,
 } = require("../DropRates.json");
 
+const pitySchema = require("../database/Schemas.js/pity");
+const bannerSchema = require("../database/Schemas.js/banner");
+const wishingSchema = require("../database/Schemas.js/wishing");
+
 const GenChar = require("./GenerateCharacter");
 const GenWeapon = require("./GenerateWeapon");
 
-const SoftPity5 = 73;
-const SoftPity4 = 8;
+const SOFTPITY5 = 73;
+const SOFTPITY4 = 8;
 
 const pullResult = (data, rarity, char) => {
   const name = data.split("/")[4];
@@ -38,35 +42,123 @@ const pullResult = (data, rarity, char) => {
   };
 };
 
-module.exports = (wishingResult, cur5Pity, cur4Pity) => {
-  const roll = Math.random();
-  let dropRate5 = CEvent5 + Math.max(0, (cur5Pity - SoftPity5) * 10 * CEvent5);
-  let dropRate4 = CEvent4 + Math.max(0, (cur4Pity - SoftPity4) * 10 * CEvent4);
+module.exports = async (userId, userName) => {
+  pitySchema.findOne({ UserID: userId }, async (err, pData) => {
+    if (err) throw err;
 
-  // have a 0.6% probability of getting the 5 star
-  if (roll < dropRate5) {
-    wishingResult.push(pullResult(GenChar(5), 5, (char = true)));
-    cur5Pity = 1; // reset pity
-    cur4Pity++;
-  }
-  // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
-  else if (roll < dropRate4 + dropRate5) {
-    const getChar = Math.round(Math.random());
+    if (!pData) {
+      pData = {
+        UserID: message.author.id,
+        UserName: userName,
+        EventBanner5: 1,
+        EventBanner4: 1,
+        EventBanner4Uprate: false,
+        WeaponBanner5: 1,
+        WeaponBanner4: 1,
+        WeaponBanner4Uprate: false,
+        Beginner: 1,
+        BeginnerAvailable: true,
+        Permanent5: 1,
+      };
+      pitySchema.create(pData);
+    }
 
-    const res = pullResult(
-      getChar ? GenChar(4) : GenWeapon(4),
-      4,
-      (char = getChar ? true : false)
-    );
+    bannerSchema.findOne({ UserID: userId }, async (err, bData) => {
+      if (err) throw err;
 
-    wishingResult.push(res);
-    cur5Pity++;
-    cur4Pity = 1; // reset pity
-  } else {
-    wishingResult.push(pullResult(GenWeapon(3), 3, (char = false)));
-    cur5Pity++;
-    cur4Pity++;
-  }
+      if (!bData) {
+        bData = {
+          UserID: userId,
+          UserName: userName,
+          selectedBanner: 4,
+          selectedBannerName: "Wanderlust Invocation",
+        };
+      }
 
-  return [wishingResult, cur5Pity, cur4Pity];
+      // Take into account the novice banner later
+      let cur5Pity, cur4Pity;
+
+      if (bData.selectedBanner == 1 || bData.selectedBanner == 2) {
+        cur5Pity = pData.EventBanner5;
+        cur4Pity = pData.EventBanner4;
+      } else if (bData.selectedBanner == 3) {
+        cur5Pity = pData.WeaponBanner5;
+        cur4Pity = pData.WeaponBanner4;
+      } else {
+        cur5Pity = pData.Permanent5;
+        cur4Pity = pData.Permanent4;
+      }
+
+      const roll = Math.random();
+      let dropRate5 =
+        CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5) * 10 * CEvent5);
+      let dropRate4 =
+        CEvent4 + Math.max(0, (cur4Pity - SOFTPITY4) * 10 * CEvent4);
+
+      let wishResult;
+
+      // have a 0.6% probability of getting the 5 star
+      if (roll < dropRate5) {
+        wishResult = pullResult(GenChar(5), 5, (char = true));
+
+        // need to modify - reset 5-star pity to 1 and increase 4-star pity
+        pitySchema.updateOne(
+          { UserID: userId },
+          {
+            $set: { EventBanner5: 1 },
+            $inc: { EventBanner4: 1 },
+          },
+          async (err, data) => {
+            if (err) throw err;
+          }
+        );
+      }
+
+      // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
+      else if (roll < dropRate4 + dropRate5) {
+        const getChar = Math.round(Math.random());
+
+        const res = pullResult(
+          getChar ? GenChar(4) : GenWeapon(4),
+          4,
+          (char = getChar ? true : false)
+        );
+
+        wishResult = res;
+
+        // need to modify - reset 4-star pity to 1 and increase 4-star pity
+        pitySchema.updateOne(
+          { UserID: userId },
+          {
+            $set: { EventBanner4: 1 },
+            $inc: { EventBanner5: 1 },
+          },
+          async (err, data) => {
+            if (err) throw err;
+          }
+        );
+      } else {
+        wishResult = pullResult(GenWeapon(3), 3, (char = false));
+
+        // need to modify - increment 4-star and 5-star pity
+        pitySchema.updateOne(
+          { UserID: userId },
+          {
+            $inc: { EventBanner5: 1, EventBanner4: 1 },
+          },
+          async (err, data) => {
+            if (err) throw err;
+          }
+        );
+      }
+
+      wishingSchema.updateOne(
+        { UserID: userId },
+        { $push: { wishingResult: wishResult } },
+        async (err, data) => {
+          if (err) throw err;
+        }
+      );
+    });
+  });
 };

@@ -9,9 +9,6 @@ const {
 } = require("discord.js");
 const mongoose = require("./database/mongoose");
 
-// ===== Local Imports ===== //
-const wish = require("./functions/Wish");
-const displayResult = require("./functions/DisplayResults");
 // ===== Declaring Bot GatewayIntentBits and Partials ===== //
 // Creating a new client with intents and partials needed for this bot to function
 // Partials make sure that we receive the full data of the object returned from events
@@ -68,34 +65,11 @@ for (const file of eventFiles) {
 // ===== Initializes MongoDB ===== //
 mongoose.execute();
 
-// ===== Declaring and Initializing Global Variables ===== //
-// Will need to configure so every user have their own data within DB
-// Pity initialized at 1
-let wishingResult = [];
-let cur5Pity = 1;
-let cur4Pity = 1;
-
 client.on("messageCreate", (message) => {
   if (message.author.bot) return; // only allow non-bots to perform any code execution
 
   const userInput = message.content.toLowerCase().split(" ");
   const userInputText = userInput[0];
-  const userInputNumber = Number(userInput[1]);
-
-  const wantsToWish = userInputText === "!wish" || userInputText === "!pull";
-  const validNumWishes = userInputNumber === 1 || userInputNumber === 10;
-  const wishing = wantsToWish && validNumWishes;
-
-  if (wishing) {
-    for (let i = 0; i < userInputNumber; i++) {
-      result = wish(wishingResult, cur5Pity, cur4Pity);
-      wishingResult = result[0];
-      cur5Pity = result[1];
-      cur4Pity = result[2];
-    }
-    wishingResult = displayResult(message, wishingResult);
-    return;
-  }
 
   if (userInputText.startsWith(client.prefix)) {
     const args = message.content

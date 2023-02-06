@@ -1,7 +1,7 @@
 const getEmbedWeapon = require("./getEmbedWeapon.js");
 const getEmbedCharacter = require("./getEmbedCharacter.js");
 
-module.exports = (message, wishingResult) => {
+module.exports = async (message, wishingResult) => {
   let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
 
   (async () => {
@@ -21,6 +21,4 @@ module.exports = (message, wishingResult) => {
       await sleep(1500);
     }
   })();
-
-  return [];
 };
