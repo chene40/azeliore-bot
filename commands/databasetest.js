@@ -13,8 +13,6 @@ module.exports.run = async (client, message, args) => {
           UserName: message.author.username,
         });
       }
-
-      console.log(data);
     }
   );
 };

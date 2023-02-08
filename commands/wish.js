@@ -32,7 +32,6 @@ module.exports.run = async (client, message, args) => {
           async (err, data) => {
             if (err) throw err;
 
-            console.log(data);
             let wishResult = data.wishingResult;
 
             displayResult(message, wishResult);
@@ -50,7 +49,7 @@ module.exports.run = async (client, message, args) => {
           }
         );
       }, 1000);
-    }); 
+    });
   }
 };
 

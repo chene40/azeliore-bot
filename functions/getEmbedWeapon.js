@@ -20,9 +20,6 @@ module.exports = (
   },
   url
 ) => {
-  console.log(
-    `https://genshin-impact.fandom.com/wiki/${name.replace(/ /g, "_")}`
-  );
   return new EmbedBuilder()
     .setColor(0x0099ff)
     .setTitle(name)

@@ -80,7 +80,9 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name: "Beginner's Wish",
-          value: data.BeginnerAvailable ? String(data.Beginner) : "N/A",
+          value: data.BeginnerAvailable
+            ? toTitleCase(String(data.BeginnerAvailable))
+            : "N/A",
           inline: true,
         }
       );
