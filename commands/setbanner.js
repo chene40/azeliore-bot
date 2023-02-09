@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
       data = {
         UserID: message.author.id,
         UserName: message.author.username,
-        selectedBanner: 4,
+        selectedBanner: 5,
         selectedBannerName: "Wanderlust Invocation",
       };
       bannerSchema.create(data);
@@ -37,7 +37,7 @@ module.exports.run = async (client, message, args) => {
       { UserID: message.author.id },
       {
         $set: {
-          selectedBanner: inputNum - 1,
+          selectedBanner: inputNum,
           selectedBannerName: curBanner,
         },
       },

@@ -78,19 +78,28 @@ module.exports = async (userId, userName) => {
 
       // Take into account the novice banner later
       let cur5Pity, cur4Pity;
+      let banner5Name, banner4Name;
 
       if (bData.selectedBanner == 1 || bData.selectedBanner == 2) {
         cur5Pity = pData.EventBanner5;
         cur4Pity = pData.EventBanner4;
+        banner5Name = "EventBanner5";
+        banner4Name = "EventBanner4";
       } else if (bData.selectedBanner == 3) {
         cur5Pity = pData.WeaponBanner5;
         cur4Pity = pData.WeaponBanner4;
+        banner5Name = "WeaponBanner5";
+        banner4Name = "WeaponBanner4";
       } else if (bData.selectedBanner == 4 && pData.BeginnerAvailable) {
         cur5Pity = pData.Beginner5;
         cur4Pity = pData.Beginner4;
+        banner5Name = "Beginner5";
+        banner4Name = "Beginner4";
       } else {
         cur5Pity = pData.Permanent5;
         cur4Pity = pData.Permanent4;
+        banner5Name = "Permanent5";
+        banner4Name = "Permanent4";
       }
 
       const roll = Math.random();
@@ -109,8 +118,8 @@ module.exports = async (userId, userName) => {
         pitySchema.updateOne(
           { UserID: userId },
           {
-            $set: { EventBanner5: 1 },
-            $inc: { EventBanner4: 1 },
+            $set: { [banner5Name]: 1 },
+            $inc: { [banner4Name]: 1 },
           },
           async (err, data) => {
             if (err) throw err;
@@ -134,8 +143,8 @@ module.exports = async (userId, userName) => {
         pitySchema.updateOne(
           { UserID: userId },
           {
-            $set: { EventBanner4: 1 },
-            $inc: { EventBanner5: 1 },
+            $set: { [banner4Name]: 1 },
+            $inc: { [banner5Name]: 1 },
           },
           async (err, data) => {
             if (err) throw err;
@@ -148,7 +157,7 @@ module.exports = async (userId, userName) => {
         pitySchema.updateOne(
           { UserID: userId },
           {
-            $inc: { EventBanner5: 1, EventBanner4: 1 },
+            $inc: { [banner5Name]: 1, [banner4Name]: 1 },
           },
           async (err, data) => {
             if (err) throw err;
