@@ -16,15 +16,15 @@ Characters5.forEach((char) => {
   char5List.push(char.substring(0, char.indexOf(".")));
 });
 
-module.exports = (rarity) => {
+module.exports = (rarity, rateUp = [[], []]) => {
   if (rarity != 4 && rarity != 5)
     return console.error("Only a 4 star or 5 star character exists!");
 
   let numChars, randN, randChar;
   do {
-    numChars = rarity == 4 ? char4List.length : char5List.length;
+    numChars = rarity == 4 ? char4List.length : rateUp[0].length;
     randN = Math.floor(Math.random() * numChars);
-    randChar = rarity == 4 ? char4List[randN] : char5List[randN];
+    randChar = rarity == 4 ? char4List[randN] : rateUp[0][randN];
   } while (randChar.startsWith("traveler"));
 
   const char = require(`../GenshinData/Characters${rarity}/${randChar}.json`);

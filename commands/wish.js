@@ -3,7 +3,7 @@ const wish = require("../functions/Wish");
 const displayResult = require("../functions/DisplayResults");
 const wishingSchema = require("../database/Schemas.js/wishing");
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = (client, message, args) => {
   const numWishes = Number(args[1]);
   const validNumWishes = numWishes === 1 || numWishes === 10;
 
@@ -20,11 +20,9 @@ module.exports.run = async (client, message, args) => {
         wishingSchema.create(data);
       }
 
-      await (async () => {
-        for (let i = 0; i < numWishes; i++) {
-          wish(message.author.id, message.author.username);
-        }
-      })();
+      for (let i = 0; i < numWishes; i++) {
+        wish(message.author.id, message.author.username);
+      }
 
       setTimeout(() => {
         wishingSchema.findOne(

@@ -1,18 +1,4 @@
-const {
-  CEvent5,
-  CEvent4,
-  CEvent4W,
-  CEvent4C,
-  WEvent5,
-  WEventPromotional,
-  WEvent4,
-  WEvent4W,
-  WEvent4C,
-  Standard5,
-  Standard4,
-  Standard4W,
-  Standard4C,
-} = require("../DropRates.json");
+const { CEvent5, CEvent4 } = require("../DropRates.json");
 
 const pitySchema = require("../database/Schemas.js/pity");
 const bannerSchema = require("../database/Schemas.js/banner");
@@ -20,6 +6,17 @@ const wishingSchema = require("../database/Schemas.js/wishing");
 
 const GenChar = require("./GenerateCharacter");
 const GenWeapon = require("./GenerateWeapon");
+
+const CurrentBanners = require("../CurrentBanners.json");
+const currentBannerKeys = Object.keys(CurrentBanners);
+
+const event5RateUp1 = [CurrentBanners[currentBannerKeys[0]].Star5];
+const event5RateUp2 = [CurrentBanners[currentBannerKeys[1]].Star5];
+const event4RateUp = CurrentBanners[currentBannerKeys[0]].Star4;
+const weapon5RateUp = CurrentBanners[currentBannerKeys[2]].Star5;
+const weapon4RateUp = CurrentBanners[currentBannerKeys[2]].Star4;
+const perm5RateUpW = CurrentBanners[currentBannerKeys[4]].Star5W;
+const perm5RateUpC = CurrentBanners[currentBannerKeys[4]].Star5C;
 
 const SOFTPITY5 = 73;
 const SOFTPITY4 = 8;
@@ -40,6 +37,14 @@ const pullResult = (data, rarity, char) => {
     rarity: rarity,
     char: char,
   };
+};
+
+// can be refactored using array.reduce() eventually once noelle banner gets implemented
+const rateUp = (selectedBanner) => {
+  if (selectedBanner === 1) return [event5RateUp1, event4RateUp];
+  else if (selectedBanner === 2) return [event5RateUp2, event4RateUp];
+  else if (selectedBanner === 3) return [weapon5RateUp, weapon4RateUp];
+  else if (selectedBanner === 5) return [perm5RateUpW, perm5RateUpC];
 };
 
 module.exports = async (userId, userName) => {
@@ -112,7 +117,26 @@ module.exports = async (userId, userName) => {
 
       // have a 0.6% probability of getting the 5 star
       if (roll < dropRate5) {
-        wishResult = pullResult(GenChar(5), 5, (char = true));
+        if (bData.selectedBanner == 5) {
+          const getCharacter = Math.round(Math.random());
+          wishResult = pullResult(
+            getCharacter
+              ? GenChar(5, [rateUp(bData.selectedBanner)[1], []])
+              : GenWeapon(5, [rateUp(bData.selectedBanner)[0], []]),
+            5,
+            (char = getCharacter)
+          );
+        } else {
+          const getEventChar =
+            bData.selectedBanner == 0 || bData.selectedBanner == 1;
+          wishResult = pullResult(
+            getEventChar
+              ? GenChar(5, rateUp(bData.selectedBanner))
+              : GenWeapon(5, rateUp(bData.selectedBanner)),
+            5,
+            (char = getEventChar)
+          );
+        }
 
         // need to modify - reset 5-star pity to 1 and increase 4-star pity
         pitySchema.updateOne(
@@ -129,12 +153,15 @@ module.exports = async (userId, userName) => {
 
       // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
       else if (roll < dropRate4 + dropRate5) {
-        const getChar = Math.round(Math.random());
+        const getEventChar =
+          bData.selectedBanner == 0 || bData.selectedBanner == 1;
 
         const res = pullResult(
-          getChar ? GenChar(4) : GenWeapon(4),
+          getEventChar
+            ? GenChar(4, rateUp(bData.selectedBanner))
+            : GenWeapon(4, rateUp(bData.selectedBanner)),
           4,
-          (char = getChar ? true : false)
+          (char = getEventChar ? true : false)
         );
 
         wishResult = res;
