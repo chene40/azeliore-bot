@@ -22,6 +22,7 @@ const pullResult = require("./pullResult");
 const { CEvent5, CEvent4 } = require("../DropRates.json");
 const SOFTPITY5 = 73;
 const SOFTPITY4 = 8;
+const SOFTPITY5W = 63;
 
 module.exports = async (userId, userName) => {
   pitySchema.findOne({ UserID: userId }, async (err, pData) => {
@@ -50,7 +51,9 @@ module.exports = async (userId, userName) => {
 
       const roll = Math.random();
       let dropRate5 =
-        CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5) * 10 * CEvent5);
+        bData.selectedBanner == 3
+          ? CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5W) * 10 * CEvent5)
+          : CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5) * 10 * CEvent5);
       let dropRate4 =
         CEvent4 + Math.max(0, (cur4Pity - SOFTPITY4) * 10 * CEvent4);
 
