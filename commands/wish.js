@@ -1,51 +1,47 @@
 // ===== Local Imports ===== //
-const wish = require("../functions/Wish");
-const displayResult = require("../functions/DisplayResults");
+const wish = require("../functions/performWish");
+const displayResult = require("../functions/displayResults");
 const wishingSchema = require("../database/Schemas.js/wishing");
+const newUserWishing = require("../database/Templates.js/newUserWishing");
 
 module.exports.run = (client, message, args) => {
   const numWishes = Number(args[1]);
   const validNumWishes = numWishes === 1 || numWishes === 10;
 
   if (validNumWishes) {
-    wishingSchema.findOne({ UserID: message.author.id }, async (err, data) => {
+    const userName = message.author.username;
+    const userId = message.author.id;
+
+    wishingSchema.findOne({ UserID: userId }, async (err, data) => {
       if (err) throw err;
 
-      if (!data) {
-        data = {
-          UserID: message.author.id,
-          UserName: message.author.username,
-          wishingResult: [],
-        };
-        wishingSchema.create(data);
-      }
+      if (!data) data = newUserWishing(userId, userName);
 
-      for (let i = 0; i < numWishes; i++) {
-        wish(message.author.id, message.author.username);
-      }
+      (async () => {
+        for (let i = 0; i < numWishes; i++) {
+          await wish(userId, userName, i);
+        }
+      })();
 
       setTimeout(() => {
-        wishingSchema.findOne(
-          { UserID: message.author.id },
-          async (err, data) => {
-            if (err) throw err;
+        wishingSchema.findOne({ UserID: userId }, async (err, data) => {
+          if (err) throw err;
 
-            let wishResult = data.wishingResult;
+          let wishResult = data.wishingResult;
 
-            displayResult(message, wishResult);
-            wishingSchema.updateOne(
-              { UserID: message.author.id },
-              {
-                $set: {
-                  wishingResult: [],
-                },
+          displayResult(message, wishResult);
+          wishingSchema.updateOne(
+            { UserID: userId },
+            {
+              $set: {
+                wishingResult: [],
               },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          }
-        );
+            },
+            async (err, data) => {
+              if (err) throw err;
+            }
+          );
+        });
       }, 1000);
     });
   }

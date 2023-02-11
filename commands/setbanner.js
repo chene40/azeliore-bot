@@ -1,5 +1,6 @@
 const bannerSchema = require("../database/Schemas.js/banner");
 const CurrentBanners = require("../CurrentBanners.json");
+const newUserBanner = require("../database/Templates.js/newUserBanner");
 
 module.exports.run = async (client, message, args) => {
   bannerSchema.findOne({ UserID: message.author.id }, async (err, data) => {
@@ -8,15 +9,7 @@ module.exports.run = async (client, message, args) => {
     const inputNum = Number(args[1]);
 
     // default banner selection
-    if (!data) {
-      data = {
-        UserID: message.author.id,
-        UserName: message.author.username,
-        selectedBanner: 5,
-        selectedBannerName: "Wanderlust Invocation",
-      };
-      bannerSchema.create(data);
-    }
+    if (!data) data = newUserBanner(message.author.id, message.author.username);
 
     const banners = Object.keys(CurrentBanners);
 
