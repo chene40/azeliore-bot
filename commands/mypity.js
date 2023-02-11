@@ -1,31 +1,17 @@
 const { EmbedBuilder } = require("discord.js");
 const pitySchema = require("../database/Schemas.js/pity");
 const toTitleCase = require("../functions/toTitleCase");
+const newUserPity = require("../database/Templates.js/newUserPity");
 
 module.exports.run = async (client, message, args) => {
   pitySchema.findOne({ UserID: message.author.id }, async (err, data) => {
     if (err) throw err;
 
-    if (!data) {
-      data = {
-        UserID: message.author.id,
-        UserName: message.author.username,
-        EventBanner5: 1,
-        EventBanner4: 1,
-        EventBanner4Uprate: false,
-        WeaponBanner5: 1,
-        WeaponBanner4: 1,
-        WeaponBanner4Uprate: false,
-        Beginner5: 1,
-        Beginner4: 1,
-        BeginnerAvailable: true,
-        Permanent5: 1,
-      };
-      pitySchema.create(data);
-    }
-
-    const tag = message.author.discriminator;
     const username = message.author.username;
+    const userId = message.author.id;
+    const tag = message.author.discriminator;
+
+    if (!data) data = newUserPity(userId, userName);
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)

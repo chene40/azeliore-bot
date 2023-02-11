@@ -4,11 +4,13 @@ let pitySchema = new Schema({
   UserID: String,
   UserName: String,
   EventBanner5: Number,
+  EventBanner5Uprate: Boolean, // if next 5-star pull is guaranteed to be promotional character
   EventBanner4: Number,
-  EventBanner4Uprate: Boolean, // if next 4-star pull have to be promotional character
+  EventBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional character
   WeaponBanner5: Number,
+  WeaponBanner5Fates: Number, // number of fate points accumulated
   WeaponBanner4: Number,
-  WeaponBanner4Uprate: Boolean, // if next 4-star pull have to be promotional weapon
+  WeaponBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional weapon
   Beginner5: Number,
   Beginner4: Number,
   BeginnerAvailable: Boolean, // if player can still wish on this banner
