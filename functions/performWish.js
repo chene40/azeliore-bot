@@ -75,6 +75,99 @@ module.exports = async (userId, userName) => {
 
         // weapon banner
         else if (bData.selectedBanner == 3) {
+          const getUprated =
+            Math.random() >= 0.25 || pData.FateSelection.Uprated; // if we get uprated weapon or not
+
+          const guaranteed =
+            pData.FateSelection.Selected && pData.FateSelection.Fates == 2;
+
+          if (getUprated || guaranteed) {
+            if (guaranteed) {
+              wishResult = pullResult(
+                GenWeapon(5, [[pData.FateSelection.WeaponName], []]),
+                5,
+                (char = false)
+              );
+
+              pitySchema.updateOne(
+                { UserID: userId },
+                {
+                  $set: {
+                    "FateSelection.Fates": 0,
+                    "FateSelection.Uprated": false,
+                  },
+                },
+                async (err, data) => {
+                  if (err) throw err;
+                }
+              );
+            } else {
+              wishResult = pullResult(
+                GenWeapon(5, rateUp(bData.selectedBanner)),
+                5,
+                (char = false)
+              );
+
+              if (pData.FateSelection.Selected) {
+                const resName = wishResult.apiData.name
+                  .toLowerCase()
+                  .replace(/ /g, "-");
+                if (resName === pData.FateSelection.WeaponName) {
+                  pitySchema.updateOne(
+                    { UserID: userId },
+                    {
+                      $set: {
+                        "FateSelection.Fates": 0,
+                        "FateSelection.Uprated": false,
+                      },
+                    },
+                    async (err, data) => {
+                      if (err) throw err;
+                    }
+                  );
+                } else {
+                  pitySchema.updateOne(
+                    { UserID: userId },
+                    {
+                      $set: {
+                        "FateSelection.Uprated": false,
+                      },
+                      $inc: { "FateSelection.Fates": 1 },
+                    },
+                    async (err, data) => {
+                      if (err) throw err;
+                    }
+                  );
+                }
+              }
+            }
+          } else {
+            wishResult = pullResult(GenWeapon(5, rateUp(5)), 5, (char = false));
+
+            if (pData.FateSelection.Selected) {
+              pitySchema.updateOne(
+                { UserID: userId },
+                {
+                  $inc: { "FateSelection.Fates": 1 },
+                },
+                async (err, data) => {
+                  if (err) throw err;
+                }
+              );
+            }
+
+            if (!pData.FateSelection.Uprated) {
+              pitySchema.updateOne(
+                { UserID: userId },
+                {
+                  $set: { "FateSelection.Uprated": true },
+                },
+                async (err, data) => {
+                  if (err) throw err;
+                }
+              );
+            }
+          }
         }
 
         // noelle banner
