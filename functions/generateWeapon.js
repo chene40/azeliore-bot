@@ -5,22 +5,22 @@ const Weapons3 = fs.readdirSync("./GenshinData/Weapons3");
 const Weapons4 = fs.readdirSync("./GenshinData/Weapons4");
 const Weapons5 = fs.readdirSync("./GenshinData/Weapons5");
 
-const weap3List = [];
-const weap4List = [];
-const weap5List = [];
+const battlePassWeapons = [
+  "the-black-sword",
+  "serpent-spine",
+  "solar-pearl",
+  "the-viridescent-hunt",
+  "deathmatch",
+];
 
 // ===== Obtains a list of all the weapons in string representation ===== //
-Weapons3.forEach((weap) => {
-  weap3List.push(weap.substring(0, weap.indexOf(".")));
-});
+const weap3List = Weapons3.map((weap) => weap.substring(0, weap.indexOf(".")));
 
-Weapons4.forEach((weap) => {
-  weap4List.push(weap.substring(0, weap.indexOf(".")));
-});
+const weap4List = Weapons4.map((weap) =>
+  weap.substring(0, weap.indexOf("."))
+).filter((weap) => !battlePassWeapons.includes(weap));
 
-Weapons5.forEach((weap) => {
-  weap5List.push(weap.substring(0, weap.indexOf(".")));
-});
+const weap5List = Weapons5.map((weap) => weap.substring(0, weap.indexOf(".")));
 
 module.exports = (rarity, rateUp = [[], []]) => {
   if (rarity != 3 && rarity != 4 && rarity != 5)
