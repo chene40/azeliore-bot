@@ -48,8 +48,27 @@ module.exports.run = async (client, message, args) => {
           inline: true,
         },
         {
-          name: "Weapon Banner Uprate",
+          name: "Weapon Banner Uprate (4⭐)",
           value: toTitleCase(String(data.WeaponBanner4Uprate)),
+          inline: true,
+        }
+      )
+      .addFields(
+        {
+          name: "Current Fate Selection",
+          value: data.FateSelection.Selected
+            ? toTitleCase(data.FateSelection.WeaponName.replace(/-/g, " "))
+            : "None",
+          inline: true,
+        },
+        {
+          name: "Current Fate Pity",
+          value: String(data.FateSelection.Fates),
+          inline: true,
+        },
+        {
+          name: "Weapon Banner Uprate (5⭐)",
+          value: toTitleCase(String(data.FateSelection.Uprated)),
           inline: true,
         }
       )

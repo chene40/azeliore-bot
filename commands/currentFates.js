@@ -1,7 +1,7 @@
 const CurrentBanners = require("../CurrentBanners.json");
 
 module.exports.run = (client, message, args) => {
-  let fatesAvailable = "The current available banners are:\n";
+  let fatesAvailable = "The current available fate paths are:\n";
 
   const banners = Object.keys(CurrentBanners);
   const weaponBanner = CurrentBanners[banners[2]];
