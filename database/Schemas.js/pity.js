@@ -9,6 +9,13 @@ let pitySchema = new Schema({
   EventBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional character
   WeaponBanner5: Number,
   WeaponBanner5Fates: Number, // number of fate points accumulated
+  FateSelection: {
+    Selected: Boolean,
+    WeaponName: String,
+    WeaponNum: Number,
+    Fates: Number,
+    Uprated: Boolean,
+  },
   WeaponBanner4: Number,
   WeaponBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional weapon
   Beginner5: Number,
