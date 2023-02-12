@@ -22,9 +22,11 @@ module.exports = (rarity, rateUp = [[], []]) => {
 
   let numChars, randN, randChar;
   do {
-    numChars = rarity == 4 ? char4List.length : rateUp[0].length;
+    // rateUp[0] -> 5 star
+    // rateUp[1] -> 4 star
+    numChars = rateUp[0].length ? rateUp[0].length : rateUp[1].length;
     randN = Math.floor(Math.random() * numChars);
-    randChar = rarity == 4 ? char4List[randN] : rateUp[0][randN];
+    randChar = rateUp[0].length ? rateUp[0][randN] : rateUp[1][randN];
   } while (randChar.startsWith("traveler"));
 
   const char = require(`../GenshinData/Characters${rarity}/${randChar}.json`);

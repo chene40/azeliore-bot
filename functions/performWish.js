@@ -61,6 +61,7 @@ module.exports = async (userId, userName) => {
 
       // have a 0.6% probability of getting the 5 star
       if (roll < dropRate5) {
+        // standard banner
         if (bData.selectedBanner == 5) {
           const getCharacter = Math.round(Math.random());
           wishResult = pullResult(
@@ -70,35 +71,148 @@ module.exports = async (userId, userName) => {
             5,
             (char = getCharacter)
           );
-        } else {
-          const getEventChar =
-            bData.selectedBanner == 0 || bData.selectedBanner == 1;
+        }
+
+        // weapon banner
+        else if (bData.selectedBanner == 3) {
+        }
+
+        // noelle banner
+        else if (bData.selectedBanner == 4) {
+        }
+
+        // event banner
+        else {
+          const getUprate = Math.round(Math.random());
+          const guaranteed = pData.EventBanner5Uprate;
+          const getEventChar = guaranteed || getUprate;
+
           wishResult = pullResult(
             getEventChar
               ? GenChar(5, rateUp(bData.selectedBanner))
-              : GenWeapon(5, rateUp(bData.selectedBanner)),
+              : GenChar(5, [rateUp(5)[1], []]),
             5,
-            (char = getEventChar)
+            (char = true)
           );
+
+          if (getEventChar) {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { EventBanner5Uprate: false } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          } else {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { EventBanner5Uprate: true } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          }
         }
         resetFivePity(userId, banner5Name, banner4Name); // reset 5-star pity to 1 and increase 4-star pity
       }
 
-      // probability of getting 4 star weapon (taking into account the marginal 5* drop rate)
+      // probability of getting 4 star (taking into account the marginal 5* drop rate)
       else if (roll < dropRate4 + dropRate5) {
-        const getEventChar =
-          bData.selectedBanner == 0 || bData.selectedBanner == 1;
+        // standard banner
+        if (bData.selectedBanner == 5) {
+          const getCharacter = Math.round(Math.random());
+          wishResult = pullResult(
+            getCharacter
+              ? GenChar(4, [rateUp(bData.selectedBanner)[1], []])
+              : GenWeapon(4, [rateUp(bData.selectedBanner)[0], []]),
+            5,
+            (char = getCharacter)
+          );
+        }
 
-        const res = pullResult(
-          getEventChar
-            ? GenChar(4, rateUp(bData.selectedBanner))
-            : GenWeapon(4, rateUp(bData.selectedBanner)),
-          4,
-          (char = getEventChar ? true : false)
-        );
+        // weapon banner
+        else if (bData.selectedBanner == 3) {
+          const getUprate = Math.random() >= 0.25;
+          const guaranteed = pData.WeaponBanner4Uprate;
+          const getEventWeapon = guaranteed || getUprate;
 
-        wishResult = res;
+          let res, isPullWeapon;
 
+          if (!getEventWeapon) {
+            isPullWeapon = Math.round(Math.random());
+            if (isPullWeapon) res = GenWeapon(4, rateUp(7));
+            else res = GenChar(4, rateUp(6));
+          }
+
+          wishResult = pullResult(
+            getEventWeapon
+              ? GenWeapon(4, [[], rateUp(bData.selectedBanner)[1]])
+              : res,
+            4,
+            (char = !(getEventWeapon || isPullWeapon))
+          );
+          if (getEventWeapon) {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { WeaponBanner4Uprate: false } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          } else {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { WeaponBanner4Uprate: true } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          }
+        }
+
+        // noelle banner
+        else if (bData.selectedBanner == 4) {
+        }
+
+        // event banner
+        else {
+          const getUprate = Math.round(Math.random());
+          const guaranteed = pData.EventBanner4Uprate;
+          const getEventChar = guaranteed || getUprate;
+
+          let res, isPullChar;
+
+          if (!getEventChar) {
+            isPullChar = Math.round(Math.random());
+            if (isPullChar) res = GenChar(4, rateUp(6));
+            else res = GenWeapon(4, rateUp(7));
+          }
+
+          wishResult = pullResult(
+            getEventChar
+              ? GenChar(4, [[], rateUp(bData.selectedBanner)[1]])
+              : res,
+            4,
+            (char = getEventChar || isPullChar)
+          );
+          if (getEventChar) {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { EventBanner4Uprate: false } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          } else {
+            pitySchema.updateOne(
+              { UserID: userId },
+              { $set: { EventBanner4Uprate: true } },
+              async (err, data) => {
+                if (err) throw err;
+              }
+            );
+          }
+        }
         resetFourPity(userId, banner5Name, banner4Name); // reset 4-star pity to 1 and increase 5-star pity
       } else {
         wishResult = pullResult(GenWeapon(3), 3, (char = false));
