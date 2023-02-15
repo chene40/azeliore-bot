@@ -6,10 +6,18 @@ const bannerSchema = require("../database/Schemas.js/banner");
 const newPityUser = require("../database/Templates.js/newUserPity");
 
 // Database Updates
-const updateWishResult = require("../database/UpdatePulls.js/updateWishResult");
-const updateBothPity = require("../database/UpdatePulls.js/updateBothPity");
-const resetFourPity = require("../database/UpdatePulls.js/resetFourPity");
-const resetFivePity = require("../database/UpdatePulls.js/resetFivePity");
+const {
+  updateWishResult,
+  updateBothPity,
+  resetFourPity,
+  resetFivePity,
+  resetFates,
+  updateLostFate5050,
+  increaseFatePoint,
+  setUpratedFate,
+  setEB4Uprate,
+  setWB4Uprate,
+} = require("../database/UpdatePulls.js");
 
 // Helper Functions
 const GenChar = require("./generateCharacter");
@@ -42,19 +50,22 @@ module.exports = async (userId, userName) => {
         };
       }
 
+      const curBanner = bData.selectedBanner;
+
       // Take into account the novice banner later
       const pityAndBanner = getPityAndBannerName(pData, bData);
-      let cur5Pity = pityAndBanner[0];
-      let cur4Pity = pityAndBanner[1];
-      let banner5Name = pityAndBanner[2];
-      let banner4Name = pityAndBanner[3];
+      const cur5Pity = pityAndBanner[0];
+      const cur4Pity = pityAndBanner[1];
+      const banner5Name = pityAndBanner[2];
+      const banner4Name = pityAndBanner[3];
 
       const roll = Math.random();
-      let dropRate5 =
-        bData.selectedBanner == 3
+
+      const dropRate5 =
+        curBanner == 3
           ? CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5W) * 10 * CEvent5)
           : CEvent5 + Math.max(0, (cur5Pity - SOFTPITY5) * 10 * CEvent5);
-      let dropRate4 =
+      const dropRate4 =
         CEvent4 + Math.max(0, (cur4Pity - SOFTPITY4) * 10 * CEvent4);
 
       let wishResult;
@@ -62,111 +73,47 @@ module.exports = async (userId, userName) => {
       // have a 0.6% probability of getting the 5 star
       if (roll < dropRate5) {
         // standard banner
-        if (bData.selectedBanner == 4) {
+        if (curBanner == 4) {
           const getCharacter = Math.round(Math.random());
           wishResult = pullResult(
             getCharacter
-              ? GenChar(5, [rateUp(bData.selectedBanner)[1], []])
-              : GenWeapon(5, [rateUp(bData.selectedBanner)[0], []]),
+              ? GenChar(5, [rateUp(curBanner)[1], []])
+              : GenWeapon(5, [rateUp(curBanner)[0], []]),
             5,
             (char = getCharacter)
           );
         }
 
         // weapon banner
-        else if (bData.selectedBanner == 3) {
-          const getUprated =
-            Math.random() >= 0.25 || pData.FateSelection.Uprated; // if we get uprated weapon or not
+        else if (curBanner == 3) {
+          const { Uprated, Selected, Fates, WeaponName } = pData.FateSelection;
+          const getUprated = Math.random() >= 0.25 || Uprated; // if we get uprated weapon or not
+          const guaranteed = Selected && Fates == 2;
 
-          const guaranteed =
-            pData.FateSelection.Selected && pData.FateSelection.Fates == 2;
+          let newWeapon;
 
           if (getUprated || guaranteed) {
             if (guaranteed) {
-              wishResult = pullResult(
-                GenWeapon(5, [[pData.FateSelection.WeaponName], []]),
-                5,
-                (char = false)
-              );
-
-              pitySchema.updateOne(
-                { UserID: userId },
-                {
-                  $set: {
-                    "FateSelection.Fates": 0,
-                    "FateSelection.Uprated": false,
-                  },
-                },
-                async (err, data) => {
-                  if (err) throw err;
-                }
-              );
+              newWeapon = GenWeapon(5, [[WeaponName], []]);
+              wishResult = pullResult(newWeapon, 5, (char = false));
+              resetFates(userId);
             } else {
-              wishResult = pullResult(
-                GenWeapon(5, rateUp(bData.selectedBanner)),
-                5,
-                (char = false)
-              );
+              newWeapon = GenWeapon(5, rateUp(curBanner));
+              wishResult = pullResult(newWeapon, 5, (char = false));
 
-              if (pData.FateSelection.Selected) {
+              if (Selected) {
                 const resName = wishResult.apiData.name
                   .toLowerCase()
                   .replace(/ /g, "-");
-                if (resName === pData.FateSelection.WeaponName) {
-                  pitySchema.updateOne(
-                    { UserID: userId },
-                    {
-                      $set: {
-                        "FateSelection.Fates": 0,
-                        "FateSelection.Uprated": false,
-                      },
-                    },
-                    async (err, data) => {
-                      if (err) throw err;
-                    }
-                  );
-                } else {
-                  pitySchema.updateOne(
-                    { UserID: userId },
-                    {
-                      $set: {
-                        "FateSelection.Uprated": false,
-                      },
-                      $inc: { "FateSelection.Fates": 1 },
-                    },
-                    async (err, data) => {
-                      if (err) throw err;
-                    }
-                  );
-                }
+                if (resName === WeaponName) resetFates(userId);
+                else updateLostFate5050(userId);
               }
             }
           } else {
-            wishResult = pullResult(GenWeapon(5, rateUp(4)), 5, (char = false));
-
-            if (pData.FateSelection.Selected) {
-              pitySchema.updateOne(
-                { UserID: userId },
-                {
-                  $inc: { "FateSelection.Fates": 1 },
-                },
-                async (err, data) => {
-                  if (err) throw err;
-                }
-              );
-            }
-
-            if (!pData.FateSelection.Uprated) {
-              pitySchema.updateOne(
-                { UserID: userId },
-                {
-                  $set: { "FateSelection.Uprated": true },
-                },
-                async (err, data) => {
-                  if (err) throw err;
-                }
-              );
-            }
+            newWeapon = GenWeapon(5, rateUp(4));
+            wishResult = pullResult(newWeapon, 5, (char = false));
+            if (Selected) increaseFatePoint(userId);
+            if (!Uprated) setUpratedFate(userId);
           }
         }
 
@@ -176,31 +123,14 @@ module.exports = async (userId, userName) => {
           const guaranteed = pData.EventBanner5Uprate;
           const getEventChar = guaranteed || getUprate;
 
-          wishResult = pullResult(
-            getEventChar
-              ? GenChar(5, rateUp(bData.selectedBanner))
-              : GenChar(5, [rateUp(4)[1], []]),
-            5,
-            (char = true)
-          );
+          let newChar;
+          if (getEventChar) newChar = GenChar(5, rateUp(curBanner));
+          else newChar = GenChar(5, [rateUp(4)[1], []]);
 
-          if (getEventChar) {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { EventBanner5Uprate: false } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          } else {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { EventBanner5Uprate: true } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          }
+          wishResult = pullResult(newChar, 5, (char = true));
+
+          if (getEventChar) setEB4Uprate(userId, false);
+          else setEB4Uprate(userId, true);
         }
         resetFivePity(userId, banner5Name, banner4Name); // reset 5-star pity to 1 and increase 4-star pity
       }
@@ -208,19 +138,19 @@ module.exports = async (userId, userName) => {
       // probability of getting 4 star (taking into account the marginal 5* drop rate)
       else if (roll < dropRate4 + dropRate5) {
         // standard banner
-        if (bData.selectedBanner == 5) {
+        if (curBanner === 5) {
           const getCharacter = Math.round(Math.random());
           wishResult = pullResult(
             getCharacter
-              ? GenChar(4, [rateUp(bData.selectedBanner)[1], []])
-              : GenWeapon(4, [rateUp(bData.selectedBanner)[0], []]),
+              ? GenChar(4, [rateUp(curBanner)[1], []])
+              : GenWeapon(4, [rateUp(curBanner)[0], []]),
             5,
             (char = getCharacter)
           );
         }
 
         // weapon banner
-        else if (bData.selectedBanner == 3) {
+        else if (curBanner === 3) {
           const getUprate = Math.random() >= 0.25;
           const guaranteed = pData.WeaponBanner4Uprate;
           const getEventWeapon = guaranteed || getUprate;
@@ -233,29 +163,12 @@ module.exports = async (userId, userName) => {
             else res = GenChar(4, rateUp(5));
           }
           wishResult = pullResult(
-            getEventWeapon
-              ? GenWeapon(4, [[], rateUp(bData.selectedBanner)[1]])
-              : res,
+            getEventWeapon ? GenWeapon(4, [[], rateUp(curBanner)[1]]) : res,
             4,
             (char = !(getEventWeapon || isPullWeapon))
           );
-          if (getEventWeapon) {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { WeaponBanner4Uprate: false } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          } else {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { WeaponBanner4Uprate: true } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          }
+          if (getEventWeapon) setWB4Uprate(userId, false);
+          else setWB4Uprate(userId, true);
         }
         // event banner
         else {
@@ -272,29 +185,12 @@ module.exports = async (userId, userName) => {
           }
 
           wishResult = pullResult(
-            getEventChar
-              ? GenChar(4, [[], rateUp(bData.selectedBanner)[1]])
-              : res,
+            getEventChar ? GenChar(4, [[], rateUp(curBanner)[1]]) : res,
             4,
             (char = getEventChar || isPullChar)
           );
-          if (getEventChar) {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { EventBanner4Uprate: false } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          } else {
-            pitySchema.updateOne(
-              { UserID: userId },
-              { $set: { EventBanner4Uprate: true } },
-              async (err, data) => {
-                if (err) throw err;
-              }
-            );
-          }
+          if (getEventChar) setEB4Uprate(userId, false);
+          else setEB4Uprate(userId, true);
         }
         resetFourPity(userId, banner5Name, banner4Name); // reset 4-star pity to 1 and increase 5-star pity
       } else {
