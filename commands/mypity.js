@@ -17,16 +17,16 @@ module.exports.run = async (client, message, args) => {
       .setColor(0x0099ff)
       .setTitle(`${username}#${tag}'s Pity Stats`)
       .setDescription(
-        "Here are your current pity stats for the Event, Weapon, and the Permanent Banner..."
+        "Here are your current pity stats for the Event/Weapon/Permanent Banner..."
       )
       .addFields(
         {
-          name: "Event ⭐⭐⭐⭐⭐",
+          name: "Event Pity (5 ⭐)",
           value: String(data.EventBanner5),
           inline: true,
         },
         {
-          name: "Event ⭐⭐⭐⭐",
+          name: "Event Pity (4 ⭐)",
           value: String(data.EventBanner4),
           inline: true,
         },
@@ -38,18 +38,20 @@ module.exports.run = async (client, message, args) => {
       )
       .addFields(
         {
-          name: "Weapon ⭐⭐⭐⭐⭐",
+          name: "Weapon Pity (5 ⭐)",
           value: String(data.WeaponBanner5),
           inline: true,
         },
         {
-          name: "Weapon ⭐⭐⭐⭐",
+          name: "Weapon Pity (4 ⭐)",
           value: String(data.WeaponBanner4),
           inline: true,
         },
         {
-          name: "Weapon Banner Uprate (4⭐)",
-          value: toTitleCase(String(data.WeaponBanner4Uprate)),
+          name: "Weapon Banner Uprate",
+          value: ` 5 ⭐: ${toTitleCase(
+            String(data.FateSelection.Uprated)
+          )} \n 4 ⭐: ${toTitleCase(String(data.WeaponBanner4Uprate))}`,
           inline: true,
         }
       )
@@ -65,32 +67,13 @@ module.exports.run = async (client, message, args) => {
           name: "Current Fate Pity",
           value: String(data.FateSelection.Fates),
           inline: true,
-        },
-        {
-          name: "Weapon Banner Uprate (5⭐)",
-          value: toTitleCase(String(data.FateSelection.Uprated)),
-          inline: true,
         }
       )
-      .addFields(
-        {
-          name: "Permanent Wish",
-          value: String(data.Permanent5),
-          inline: true,
-        },
-        {
-          name: "Beginner Wish Available",
-          value: toTitleCase(String(data.BeginnerAvailable)),
-          inline: true,
-        },
-        {
-          name: "Beginner's Wish",
-          value: data.BeginnerAvailable
-            ? toTitleCase(String(data.BeginnerAvailable))
-            : "N/A",
-          inline: true,
-        }
-      );
+      .addFields({
+        name: "Permanent Wish",
+        value: String(data.Permanent5),
+        inline: true,
+      });
     message.channel.send({
       embeds: [embed],
     });

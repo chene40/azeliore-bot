@@ -17,10 +17,6 @@
 		"Star5": ["haran-geppaku-futsu", "engulfing-lightning"],
 		"Star4": ["akuoumaru", "mouun's-moon", "lion's-roar", "favonius-lance", "sacrificial-fragments"]
 	},
-	"Beginner's Wish": {
-		"Character": "noelle",
-		"Type": "Permanent"
-	},
 	"Wanderlust Invocation": {
 		"Type": "Permanent",
 		"Star5W": ["amos's-bow", "skyward-harp", "lost-prayers-to-the-sacred-winds", "skyward-atlas", 

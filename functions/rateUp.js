@@ -6,8 +6,8 @@ const event5RateUp2 = [CurrentBanners[currentBannerKeys[1]].Star5];
 const event4RateUp = CurrentBanners[currentBannerKeys[0]].Star4;
 const weapon5RateUp = CurrentBanners[currentBannerKeys[2]].Star5;
 const weapon4RateUp = CurrentBanners[currentBannerKeys[2]].Star4;
-const perm5RateUpW = CurrentBanners[currentBannerKeys[4]].Star5W;
-const perm5RateUpC = CurrentBanners[currentBannerKeys[4]].Star5C;
+const perm5RateUpW = CurrentBanners[currentBannerKeys[3]].Star5W;
+const perm5RateUpC = CurrentBanners[currentBannerKeys[3]].Star5C;
 
 const fs = require("fs");
 
@@ -39,7 +39,7 @@ module.exports = (selectedBanner) => {
   if (selectedBanner === 1) return [event5RateUp1, event4RateUp];
   else if (selectedBanner === 2) return [event5RateUp2, event4RateUp];
   else if (selectedBanner === 3) return [weapon5RateUp, weapon4RateUp];
-  else if (selectedBanner === 5) return [perm5RateUpW, perm5RateUpC];
-  else if (selectedBanner === 6) return [[], char4List];
-  else if (selectedBanner === 7) return [[], weap4List];
+  else if (selectedBanner === 4) return [perm5RateUpW, perm5RateUpC];
+  else if (selectedBanner === 5) return [[], char4List];
+  else if (selectedBanner === 6) return [[], weap4List];
 };

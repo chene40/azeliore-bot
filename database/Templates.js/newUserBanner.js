@@ -4,7 +4,7 @@ module.exports = (userId, userName) => {
   data = {
     UserID: userId,
     UserName: userName,
-    selectedBanner: 5,
+    selectedBanner: 4,
     selectedBannerName: "Wanderlust Invocation",
   };
   bannerSchema.create(data);

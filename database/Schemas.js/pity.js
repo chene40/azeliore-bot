@@ -18,9 +18,6 @@ let pitySchema = new Schema({
   },
   WeaponBanner4: Number,
   WeaponBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional weapon
-  Beginner5: Number,
-  Beginner4: Number,
-  BeginnerAvailable: Boolean, // if player can still wish on this banner
   Permanent5: Number,
 });
 

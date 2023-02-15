@@ -37,7 +37,7 @@ module.exports = async (userId, userName) => {
         bData = {
           UserID: userId,
           UserName: userName,
-          selectedBanner: 5,
+          selectedBanner: 4,
           selectedBannerName: "Wanderlust Invocation",
         };
       }
@@ -62,7 +62,7 @@ module.exports = async (userId, userName) => {
       // have a 0.6% probability of getting the 5 star
       if (roll < dropRate5) {
         // standard banner
-        if (bData.selectedBanner == 5) {
+        if (bData.selectedBanner == 4) {
           const getCharacter = Math.round(Math.random());
           wishResult = pullResult(
             getCharacter
@@ -142,7 +142,7 @@ module.exports = async (userId, userName) => {
               }
             }
           } else {
-            wishResult = pullResult(GenWeapon(5, rateUp(5)), 5, (char = false));
+            wishResult = pullResult(GenWeapon(5, rateUp(4)), 5, (char = false));
 
             if (pData.FateSelection.Selected) {
               pitySchema.updateOne(
@@ -170,10 +170,6 @@ module.exports = async (userId, userName) => {
           }
         }
 
-        // noelle banner
-        else if (bData.selectedBanner == 4) {
-        }
-
         // event banner
         else {
           const getUprate = Math.round(Math.random());
@@ -183,7 +179,7 @@ module.exports = async (userId, userName) => {
           wishResult = pullResult(
             getEventChar
               ? GenChar(5, rateUp(bData.selectedBanner))
-              : GenChar(5, [rateUp(5)[1], []]),
+              : GenChar(5, [rateUp(4)[1], []]),
             5,
             (char = true)
           );
@@ -233,10 +229,9 @@ module.exports = async (userId, userName) => {
 
           if (!getEventWeapon) {
             isPullWeapon = Math.round(Math.random());
-            if (isPullWeapon) res = GenWeapon(4, rateUp(7));
-            else res = GenChar(4, rateUp(6));
+            if (isPullWeapon) res = GenWeapon(4, rateUp(6));
+            else res = GenChar(4, rateUp(5));
           }
-
           wishResult = pullResult(
             getEventWeapon
               ? GenWeapon(4, [[], rateUp(bData.selectedBanner)[1]])
@@ -262,11 +257,6 @@ module.exports = async (userId, userName) => {
             );
           }
         }
-
-        // noelle banner
-        else if (bData.selectedBanner == 4) {
-        }
-
         // event banner
         else {
           const getUprate = Math.round(Math.random());
@@ -277,8 +267,8 @@ module.exports = async (userId, userName) => {
 
           if (!getEventChar) {
             isPullChar = Math.round(Math.random());
-            if (isPullChar) res = GenChar(4, rateUp(6));
-            else res = GenWeapon(4, rateUp(7));
+            if (isPullChar) res = GenChar(4, rateUp(5));
+            else res = GenWeapon(4, rateUp(6));
           }
 
           wishResult = pullResult(

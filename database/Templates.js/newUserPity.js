@@ -18,9 +18,6 @@ module.exports = (userId, userName) => {
     },
     WeaponBanner4: 1,
     WeaponBanner4Uprate: false,
-    Beginner5: 1,
-    Beginner4: 1,
-    BeginnerAvailable: true,
     Permanent5: 1,
   };
   pitySchema.create(pData);
