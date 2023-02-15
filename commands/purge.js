@@ -1,3 +1,4 @@
+// ===== Libraries ===== //
 const { EmbedBuilder } = require("@discordjs/builders");
 
 module.exports.run = (client, message, args) => {

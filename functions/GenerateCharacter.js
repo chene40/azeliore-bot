@@ -1,4 +1,4 @@
-const Genshin = require("genshin-api");
+// ===== Libraries ===== //
 const fs = require("fs");
 
 const Characters4 = fs.readdirSync("./GenshinData/Characters4");

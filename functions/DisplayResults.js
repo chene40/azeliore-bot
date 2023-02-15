@@ -1,3 +1,4 @@
+// ===== Local Imports ===== //
 const getEmbedWeapon = require("./getEmbedWeapon.js");
 const getEmbedCharacter = require("./getEmbedCharacter.js");
 

@@ -1,6 +1,9 @@
+// ===== Libraries ===== //
 const { EmbedBuilder } = require("discord.js");
-const pitySchema = require("../database/Schemas.js/pity");
+
+// Local Imports
 const toTitleCase = require("../functions/toTitleCase");
+const pitySchema = require("../database/Schemas.js/pity");
 const newUserPity = require("../database/Templates.js/newUserPity");
 
 module.exports.run = async (client, message, args) => {

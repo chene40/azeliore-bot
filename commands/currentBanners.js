@@ -1,4 +1,5 @@
-const CurrentBanners = require("../CurrentBanners.json");
+// ===== Local Imports ===== //
+const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
 module.exports.run = (client, message, args) => {
   let bannersAvailable = "The current available banners are:\n";

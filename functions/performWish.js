@@ -27,7 +27,7 @@ const rateUp = require("./rateUp");
 const pullResult = require("./pullResult");
 
 // Constants
-const { CEvent5, CEvent4 } = require("../DropRates.json");
+const { CEvent5, CEvent4 } = require("../GenshinData/DropRates.json");
 const SOFTPITY5 = 73;
 const SOFTPITY4 = 8;
 const SOFTPITY5W = 63;

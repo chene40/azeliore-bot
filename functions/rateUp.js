@@ -1,6 +1,13 @@
-const CurrentBanners = require("../CurrentBanners.json");
-const currentBannerKeys = Object.keys(CurrentBanners);
+// ===== Libraries ===== //
+const fs = require("fs");
 
+// ===== Local Imports ===== //
+const CurrentBanners = require("../GenshinData/CurrentBanners.json");
+
+const Characters4 = fs.readdirSync("./GenshinData/Characters4");
+const Weapons4 = fs.readdirSync("./GenshinData/Weapons4");
+
+const currentBannerKeys = Object.keys(CurrentBanners);
 const event5RateUp1 = [CurrentBanners[currentBannerKeys[0]].Star5];
 const event5RateUp2 = [CurrentBanners[currentBannerKeys[1]].Star5];
 const event4RateUp = CurrentBanners[currentBannerKeys[0]].Star4;
@@ -8,11 +15,6 @@ const weapon5RateUp = CurrentBanners[currentBannerKeys[2]].Star5;
 const weapon4RateUp = CurrentBanners[currentBannerKeys[2]].Star4;
 const perm5RateUpW = CurrentBanners[currentBannerKeys[3]].Star5W;
 const perm5RateUpC = CurrentBanners[currentBannerKeys[3]].Star5C;
-
-const fs = require("fs");
-
-const Characters4 = fs.readdirSync("./GenshinData/Characters4");
-const Weapons4 = fs.readdirSync("./GenshinData/Weapons4");
 
 const char4List = [];
 const weap4List = [];

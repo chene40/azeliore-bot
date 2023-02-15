@@ -1,6 +1,7 @@
+// ===== Local Imports ===== //
 const bannerSchema = require("../database/Schemas.js/banner");
-const CurrentBanners = require("../CurrentBanners.json");
 const newUserBanner = require("../database/Templates.js/newUserBanner");
+const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
 module.exports.run = async (client, message, args) => {
   bannerSchema.findOne({ UserID: message.author.id }, async (err, data) => {

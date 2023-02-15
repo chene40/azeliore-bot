@@ -1,4 +1,5 @@
-const CurrentBanners = require("../CurrentBanners.json");
+// ===== Local Imports ===== //
+const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
 module.exports.run = (client, message, args) => {
   let fatesAvailable = "The current available fate paths are:\n";

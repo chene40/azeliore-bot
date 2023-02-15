@@ -1,4 +1,7 @@
+// ===== Libraries ===== //
 const { EmbedBuilder } = require("discord.js");
+
+// ===== Local Imports ===== //
 const stars = require("./stars.js");
 
 const iconUrlTop =

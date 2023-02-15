@@ -1,6 +1,6 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const mongodbURL = process.env.MONGODBURL;
+const mongoose = require("mongoose");
 
 module.exports = {
   name: "mongoose",
@@ -18,6 +18,8 @@ module.exports = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
+
+    mongoose.set("strictQuery", true);
 
     mongoose.connect(mongodbURL, dbOptions);
 

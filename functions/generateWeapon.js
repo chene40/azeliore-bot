@@ -1,4 +1,4 @@
-const Genshin = require("genshin-api");
+// ===== Libraries ===== //
 const fs = require("fs");
 
 const Weapons3 = fs.readdirSync("./GenshinData/Weapons3");

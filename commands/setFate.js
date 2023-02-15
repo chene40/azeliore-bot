@@ -1,6 +1,7 @@
+// ===== Local Imports ===== //
 const pitySchema = require("../database/Schemas.js/pity");
 const newUserPity = require("../database/Templates.js/newUserPity");
-const CurrentBanners = require("../CurrentBanners.json");
+const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
 module.exports.run = async (client, message, args) => {
   pitySchema.findOne({ UserID: message.author.id }, async (err, data) => {
