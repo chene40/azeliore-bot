@@ -19,5 +19,5 @@ module.exports = (pData, bData) => {
     banner4Name = "Permanent4";
   }
 
-  return [cur5Pity, cur4Pity, banner5Name, banner4Name];
+  return { cur5Pity, cur4Pity, banner5Name, banner4Name };
 };

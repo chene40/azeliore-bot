@@ -4,9 +4,6 @@ const fs = require("fs");
 // ===== Local Imports ===== //
 const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
-const Characters4 = fs.readdirSync("./GenshinData/Characters4");
-const Weapons4 = fs.readdirSync("./GenshinData/Weapons4");
-
 const currentBannerKeys = Object.keys(CurrentBanners);
 const event5RateUp1 = [CurrentBanners[currentBannerKeys[0]].Star5];
 const event5RateUp2 = [CurrentBanners[currentBannerKeys[1]].Star5];
@@ -16,25 +13,23 @@ const weapon4RateUp = CurrentBanners[currentBannerKeys[2]].Star4;
 const perm5RateUpW = CurrentBanners[currentBannerKeys[3]].Star5W;
 const perm5RateUpC = CurrentBanners[currentBannerKeys[3]].Star5C;
 
-const char4List = [];
-const weap4List = [];
+const { char4List } = require("./generateCharacter");
+const { weap4List } = require("./generateWeapon");
 
-Characters4.forEach((char) => {
-  char4List.push(char.substring(0, char.indexOf(".")));
-});
+// make a copy of the array since we will be modifying it
+const allChar4ExcludingRateUp = char4List.slice();
+const allWeapon4ExcludingRateUp = weap4List.slice();
 
-Weapons4.forEach((weap) => {
-  weap4List.push(weap.substring(0, weap.indexOf(".")));
-});
-
+// remove the rate up character from the pool of 4 stars
 for (let char of event4RateUp) {
-  let index = char4List.indexOf(char);
-  char4List.splice(index, 1);
+  let index = allChar4ExcludingRateUp.indexOf(char);
+  allChar4ExcludingRateUp.splice(index, 1);
 }
 
+// remove the rate up weapon from the pool of 4 stars
 for (let weap of weapon4RateUp) {
-  let index = weap4List.indexOf(weap);
-  weap4List.splice(index, 1);
+  let index = allWeapon4ExcludingRateUp.indexOf(weap);
+  allWeapon4ExcludingRateUp.splice(index, 1);
 }
 
 module.exports = (selectedBanner) => {
@@ -42,6 +37,6 @@ module.exports = (selectedBanner) => {
   else if (selectedBanner === 2) return [event5RateUp2, event4RateUp];
   else if (selectedBanner === 3) return [weapon5RateUp, weapon4RateUp];
   else if (selectedBanner === 4) return [perm5RateUpW, perm5RateUpC];
-  else if (selectedBanner === 5) return [[], char4List];
-  else if (selectedBanner === 6) return [[], weap4List];
+  else if (selectedBanner === 5) return [[], allChar4ExcludingRateUp];
+  else if (selectedBanner === 6) return [[], allWeapon4ExcludingRateUp];
 };

@@ -54,11 +54,8 @@ module.exports = async (userId, userName) => {
       const curBanner = bData.selectedBanner;
 
       // Take into account the novice banner later
-      const pityAndBanner = getPityAndBannerName(pData, bData);
-      const cur5Pity = pityAndBanner[0];
-      const cur4Pity = pityAndBanner[1];
-      const banner5Name = pityAndBanner[2];
-      const banner4Name = pityAndBanner[3];
+      const { cur5Pity, cur4Pity, banner5Name, banner4Name } =
+        getPityAndBannerName(pData, bData);
 
       const roll = Math.random();
 
@@ -160,7 +157,7 @@ module.exports = async (userId, userName) => {
 
           if (!getEventWeapon) {
             isPullWeapon = Math.round(Math.random());
-            if (isPullWeapon) res = GenWeapon(4, rateUp(6));
+            if (isPullWeapon) res = GenWeapon(4, [[], weap4List]);
             else res = GenChar(4, rateUp(5));
           }
           wishResult = pullResult(
@@ -182,7 +179,7 @@ module.exports = async (userId, userName) => {
           if (!getEventChar) {
             isPullChar = Math.round(Math.random());
             if (isPullChar) res = GenChar(4, rateUp(5));
-            else res = GenWeapon(4, rateUp(6));
+            else res = GenWeapon(4, [[], weap4List]);
           }
 
           wishResult = pullResult(
