@@ -5,20 +5,14 @@ const Weapons3 = fs.readdirSync("./GenshinData/Weapons3");
 const Weapons4 = fs.readdirSync("./GenshinData/Weapons4");
 const Weapons5 = fs.readdirSync("./GenshinData/Weapons5");
 
-const battlePassWeapons = [
-  "the-black-sword",
-  "serpent-spine",
-  "solar-pearl",
-  "the-viridescent-hunt",
-  "deathmatch",
-];
+const { excludedWeapons } = require("../GenshinData");
 
 // ===== Obtains a list of all the weapons in string representation ===== //
 const weap3List = Weapons3.map((weap) => weap.substring(0, weap.indexOf(".")));
 
 const weap4List = Weapons4.map((weap) =>
   weap.substring(0, weap.indexOf("."))
-).filter((weap) => !battlePassWeapons.includes(weap));
+).filter((weap) => !excludedWeapons.includes(weap));
 
 const weap5List = Weapons5.map((weap) => weap.substring(0, weap.indexOf(".")));
 
