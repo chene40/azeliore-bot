@@ -53,7 +53,6 @@ module.exports = async (userId, userName) => {
 
       const curBanner = bData.selectedBanner;
 
-      // Take into account the novice banner later
       const { cur5Pity, cur4Pity, banner5Name, banner4Name } =
         getPityAndBannerName(pData, bData);
 

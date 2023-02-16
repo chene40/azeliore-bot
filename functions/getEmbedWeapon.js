@@ -21,7 +21,10 @@ module.exports = (
     passiveDesc,
     ascensionMaterial,
   },
-  url
+  url,
+  currentWish,
+  discTag,
+  numWishes
 ) => {
   return new EmbedBuilder()
     .setColor(0x0099ff)
@@ -31,6 +34,10 @@ module.exports = (
       name: "Weapon",
       iconURL: iconUrlTop,
       url: "https://genshin.hoyoverse.com/en/",
+    })
+    .addFields({
+      name: `Wish #${currentWish} of ${numWishes} for ${discTag}`,
+      value: " ",
     })
     .addFields(
       { name: "Weapon Type", value: type, inline: true },

@@ -9,19 +9,24 @@ const iconUrlTop =
 const iconUrlBottom =
   "https://storage.qoo-img.com/cimg/note/2022/07/22/d47df35a00787be61db3c39f00189fdf.jpg";
 
-module.exports = ({
-  name,
-  title,
-  vision,
-  weapon,
-  nation,
-  affiliation,
-  rarity,
-  constellation,
-  birthday,
-  description,
-  image,
-}) => {
+module.exports = (
+  {
+    name,
+    title,
+    vision,
+    weapon,
+    nation,
+    affiliation,
+    rarity,
+    constellation,
+    birthday,
+    description,
+    image,
+  },
+  currentWish,
+  discTag,
+  numWishes
+) => {
   return new EmbedBuilder()
     .setColor(0x0099ff)
     .setTitle(name)
@@ -32,6 +37,10 @@ module.exports = ({
       url: "https://genshin.hoyoverse.com/en/",
     })
     .setDescription(description)
+    .addFields({
+      name: `Wish #${currentWish} of ${numWishes} for ${discTag}`,
+      value: " ",
+    })
     .addFields(
       { name: "Title", value: title ? title : "None", inline: true },
       { name: "Rarity", value: stars(rarity), inline: true },
