@@ -35,7 +35,9 @@ module.exports.run = async (client, message, args) => {
         },
         {
           name: "Event Banner Uprate",
-          value: toTitleCase(String(data.EventBanner4Uprate)),
+          value: `5 ⭐: ${toTitleCase(
+            String(data.EventBanner5Uprate)
+          )} \n 4 ⭐: ${toTitleCase(String(data.EventBanner4Uprate))}`,
           inline: true,
         }
       )
