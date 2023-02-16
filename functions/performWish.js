@@ -16,6 +16,7 @@ const {
   increaseFatePoint,
   setUpratedFate,
   setEB4Uprate,
+  setEB5Uprate,
   setWB4Uprate,
 } = require("../database/UpdatePulls.js");
 
@@ -129,8 +130,8 @@ module.exports = async (userId, userName) => {
 
           wishResult = pullResult(newChar, 5, (char = true));
 
-          if (getEventChar) setEB4Uprate(userId, false);
-          else setEB4Uprate(userId, true);
+          if (getEventChar) setEB5Uprate(userId, false);
+          else setEB5Uprate(userId, true);
         }
         resetFivePity(userId, banner5Name, banner4Name); // reset 5-star pity to 1 and increase 4-star pity
       }
