@@ -32,6 +32,39 @@ const craftableWeapons = [
   "moonpiercer",
 ];
 
-const excludedWeapons = battlePassWeapons.concat(craftableWeapons);
+const paimonsBargins = [
+  "royal-bow",
+  "royal-grimoire",
+  "royal-spear",
+  "royal-greatsword",
+  "royal-longsword",
+  "blackcliff-amulet",
+  "blackcliff-pole",
+  "blackcliff-warbow",
+  "blackcliff-longsword",
+  "blackcliff-slasher",
+];
 
-module.exports = { battlePassWeapons, craftableWeapons, excludedWeapons };
+const eventWeapons = [
+  "festering-desire",
+  "luxurious-sea-lord",
+  "cinnabar-spindle",
+  "toukabou-shigure",
+  "fading-twilight",
+  "missive-windspear",
+  "dodoco-tales",
+  "windblume-ode",
+];
+
+const excludedWeapons = battlePassWeapons
+  .concat(craftableWeapons)
+  .concat(paimonsBargins)
+  .concat(eventWeapons);
+
+module.exports = {
+  battlePassWeapons,
+  craftableWeapons,
+  paimonsBargins,
+  eventWeapons,
+  excludedWeapons,
+};
