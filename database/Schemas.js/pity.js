@@ -19,6 +19,7 @@ let pitySchema = new Schema({
   WeaponBanner4: Number,
   WeaponBanner4Uprate: Boolean, // if next 4-star pull is guaranteed to be promotional weapon
   Permanent5: Number,
+  Permanent4: Number,
 });
 
 module.exports = model("pitySchema", pitySchema);

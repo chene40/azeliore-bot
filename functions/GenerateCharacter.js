@@ -16,7 +16,7 @@ Characters5.forEach((char) => {
   char5List.push(char.substring(0, char.indexOf(".")));
 });
 
-module.exports = (rarity, rateUp = [[], []]) => {
+const GenChar = (rarity, rateUp = [[], []]) => {
   if (rarity != 4 && rarity != 5)
     return console.error("Only a 4 star or 5 star character exists!");
 
@@ -32,3 +32,5 @@ module.exports = (rarity, rateUp = [[], []]) => {
   const char = require(`../GenshinData/Characters${rarity}/${randChar}.json`);
   return char.image; // api endpoint to obtain character image
 };
+
+module.exports = { char4List, char5List, GenChar };

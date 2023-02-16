@@ -19,6 +19,7 @@ module.exports = (userId, userName) => {
     WeaponBanner4: 1,
     WeaponBanner4Uprate: false,
     Permanent5: 1,
+    Permanent4: 1,
   };
   pitySchema.create(pData);
   return pData;

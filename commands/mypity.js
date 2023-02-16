@@ -34,10 +34,25 @@ module.exports.run = async (client, message, args) => {
           inline: true,
         },
         {
-          name: "Event Banner Uprate",
-          value: `5 ⭐: ${toTitleCase(
-            String(data.EventBanner5Uprate)
-          )} \n 4 ⭐: ${toTitleCase(String(data.EventBanner4Uprate))}`,
+          name: "Event Banner Uprate (5 ⭐)",
+          value: toTitleCase(String(data.EventBanner5Uprate)),
+          inline: true,
+        }
+      )
+      .addFields(
+        {
+          name: "Permanent Wish (5 ⭐)",
+          value: String(data.Permanent5),
+          inline: true,
+        },
+        {
+          name: "Permanent Wish (4 ⭐)",
+          value: String(data.Permanent4),
+          inline: true,
+        },
+        {
+          name: "Event Banner Uprate (4 ⭐)",
+          value: toTitleCase(String(data.EventBanner4Uprate)),
           inline: true,
         }
       )
@@ -53,10 +68,8 @@ module.exports.run = async (client, message, args) => {
           inline: true,
         },
         {
-          name: "Weapon Banner Uprate",
-          value: ` 5 ⭐: ${toTitleCase(
-            String(data.FateSelection.Uprated)
-          )} \n 4 ⭐: ${toTitleCase(String(data.WeaponBanner4Uprate))}`,
+          name: "Weapon Banner Uprate (5 ⭐)",
+          value: toTitleCase(String(data.FateSelection.Uprated)),
           inline: true,
         }
       )
@@ -72,13 +85,13 @@ module.exports.run = async (client, message, args) => {
           name: "Current Fate Pity",
           value: String(data.FateSelection.Fates),
           inline: true,
+        },
+        {
+          name: "Weapon Banner Uprate (4 ⭐)",
+          value: toTitleCase(String(data.WeaponBanner4Uprate)),
+          inline: true,
         }
-      )
-      .addFields({
-        name: "Permanent Wish",
-        value: String(data.Permanent5),
-        inline: true,
-      });
+      );
     message.channel.send({
       embeds: [embed],
     });

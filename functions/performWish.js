@@ -21,8 +21,8 @@ const {
 } = require("../database/UpdatePulls.js");
 
 // Helper Functions
-const GenChar = require("./generateCharacter");
-const GenWeapon = require("./generateWeapon");
+const { GenChar, char4List } = require("./generateCharacter");
+const { GenWeapon, weap4List } = require("./generateWeapon");
 const getPityAndBannerName = require("./getPityAndBannerName");
 const rateUp = require("./rateUp");
 const pullResult = require("./pullResult");
@@ -139,13 +139,13 @@ module.exports = async (userId, userName) => {
       // probability of getting 4 star (taking into account the marginal 5* drop rate)
       else if (roll < dropRate4 + dropRate5) {
         // standard banner
-        if (curBanner === 5) {
+        if (curBanner === 4) {
           const getCharacter = Math.round(Math.random());
           wishResult = pullResult(
             getCharacter
-              ? GenChar(4, [rateUp(curBanner)[1], []])
-              : GenWeapon(4, [rateUp(curBanner)[0], []]),
-            5,
+              ? GenChar(4, [char4List, []])
+              : GenWeapon(4, [weap4List, []]),
+            4,
             (char = getCharacter)
           );
         }

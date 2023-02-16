@@ -16,7 +16,7 @@ const weap4List = Weapons4.map((weap) =>
 
 const weap5List = Weapons5.map((weap) => weap.substring(0, weap.indexOf(".")));
 
-module.exports = (rarity, rateUp = [[], []]) => {
+const GenWeapon = (rarity, rateUp = [[], []]) => {
   if (rarity != 3 && rarity != 4 && rarity != 5)
     return console.error("Banner weapon rarity has to be either 3*, 4* or 5*!");
 
@@ -43,3 +43,5 @@ module.exports = (rarity, rateUp = [[], []]) => {
 
   return `https://api.genshin.dev/weapons/${randWeapon}/icon`;
 };
+
+module.exports = { weap3List, weap4List, weap5List, GenWeapon };
