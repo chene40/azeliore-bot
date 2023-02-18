@@ -3,6 +3,8 @@ const pitySchema = require("../database/Schemas.js/pity");
 const newUserPity = require("../database/Templates.js/newUserPity");
 const CurrentBanners = require("../GenshinData/CurrentBanners.json");
 
+const setFateSelection = require("../database/setFateSelection")
+
 module.exports.run = async (client, message, args) => {
   pitySchema.findOne({ UserID: message.author.id }, async (err, data) => {
     if (err) throw err;
@@ -13,9 +15,7 @@ module.exports.run = async (client, message, args) => {
     if (!data) data = newUserPity(message.author.id, message.author.username);
 
     const banners = Object.keys(CurrentBanners);
-
     const weaponBanner = CurrentBanners[banners[2]];
-
     const invalidInput = inputNum > weaponBanner.length || inputNum < 1;
 
     if (!inputNum || invalidInput) {
@@ -27,25 +27,10 @@ module.exports.run = async (client, message, args) => {
 
     const prevFate = data.FateSelection.WeaponName;
     const curFate = weaponBanner.Star5[inputNum - 1];
+	const userId = message.author.id
 
     // update the entry to the selection
-    pitySchema.updateOne(
-      { UserID: message.author.id },
-      {
-        $set: {
-          FateSelection: {
-            Selected: true,
-            WeaponName: curFate,
-            WeaponNum: inputNum,
-            Fates: 0,
-            Uprated: false,
-          },
-        },
-      },
-      async (err, data) => {
-        if (err) throw err;
-      }
-    );
+	setFateSelection(userId, curFate, inputNum)
 
     message.reply(
       prevFate
