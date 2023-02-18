@@ -13,4 +13,4 @@ module.exports.run = (client, message, args) => {
   message.reply(fatesAvailable);
 };
 
-exports.name = "currentfates".toLowerCase();
+exports.name = "currentFates".toLowerCase();

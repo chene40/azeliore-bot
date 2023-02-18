@@ -22,7 +22,24 @@ module.exports.run = (client, message, args) => {
       {
         name: "!setbanner <number>",
         value: `Update the user's current banner to one of the banners available for wishing. 
-			The input <number> be any of the following numbers: {1,2,3,4,5}, which correspond to the banner list on the !currentbanners list.`,
+			The input <number> can be any of the following numbers: {1,2,3,4}, which correspond to the banner list on the !currentbanners list.`,
+      }
+    )
+    .addFields(
+      {
+        name: "!currentfates",
+        value: `Displays a list of all available fates that the user can select and wish towards.`,
+        inline: true,
+      },
+      {
+        name: "!selectedfate",
+        value: `Shows the currently selected fate. This fate will accumulate pity if the user is attempting to make a wish on it.`,
+        inline: true,
+      },
+      {
+        name: "!setfate <number>",
+        value: `Update the user's current fate to one of the fates available for wishing. 
+			The input <number> can be any of the following numbers: {1,2}, which correspond to the fate list on the !currentfates list.`,
       }
     )
     .addFields(
