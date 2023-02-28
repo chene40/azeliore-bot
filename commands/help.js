@@ -21,8 +21,7 @@ module.exports.run = (client, message, args) => {
       },
       {
         name: "!setbanner <number>",
-        value: `Update the user's current banner to one of the banners available for wishing. 
-			The input <number> can be any of the following numbers: {1,2,3,4}, which correspond to the banner list on the !currentbanners list.`,
+        value: `Update the user's current banner to one of the banners available for wishing. \nThe input <number> can be any of the following numbers: {1,2,3,4}, which correspond to the banner list on the !currentbanners list.`,
       }
     )
     .addFields(
@@ -38,8 +37,7 @@ module.exports.run = (client, message, args) => {
       },
       {
         name: "!setfate <number>",
-        value: `Update the user's current fate to one of the fates available for wishing. 
-			The input <number> can be any of the following numbers: {1,2}, which correspond to the fate list on the !currentfates list.`,
+        value: `Update the user's current fate to one of the fates available for wishing. \nThe input <number> can be any of the following numbers: {1,2}, which correspond to the fate list on the !currentfates list.`,
       }
     )
     .addFields(
@@ -61,8 +59,7 @@ module.exports.run = (client, message, args) => {
     .addFields(
       {
         name: "!purge <amount>",
-        value: `Purge away the top <amount> most recent messages where amount is the number messages that you want to delete. 
-	  \nNote: You can only bulk delete messages to an upward of 100 at a time and only those that are less than 14 days old.`,
+        value: `Purge away the top <amount> most recent messages where amount is the number messages that you want to delete. \nNote: You can only bulk delete messages to an upward of 100 at a time and only those that are less than 14 days old.`,
       },
       {
         name: "!reload <command>",

@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
     const userId = message.author.id;
     const tag = message.author.discriminator;
 
-    if (!data) data = newUserPity(userId, userName);
+    if (!data) data = newUserPity(userId, username);
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
