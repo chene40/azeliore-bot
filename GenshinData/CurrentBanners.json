@@ -3,24 +3,28 @@
 		"Duration": "12/27/2022 - 1/17/2023",
 		"Type": "Event",
 		"Star5": "raiden",
-		"Star4": ["sara", "rosaria", "sayu"]
+		"Star4": ["sara", "rosaria", "sayu"],
+		"image": "https://expertgamereviews.com/wp-content/uploads/2022/11/Reign-of-Serenity-Details-December-2022-1024x505.webp"
 	},
 	"Azure Excursion": {
 		"Duration": "12/27/2022 - 1/17/2023",
 		"Type": "Event",
 		"Star5": "ayato",
-		"Star4": ["sara", "rosaria", "sayu"]
+		"Star4": ["sara", "rosaria", "sayu"],
+		"image": "https://www.gensh.in/fileadmin/Database/Banner_Gacha/2022/2022-12-27-Azure_Excursion.jpg"
 	},
 	"Epitome Invocation": {
 		"Duration": "12/27/2022 - 1/17/2023",
 		"Type": "Event",
 		"Star5": ["haran-geppaku-futsu", "engulfing-lightning"],
-		"Star4": ["akuoumaru", "mouun's-moon", "lion's-roar", "favonius-lance", "sacrificial-fragments"]
+		"Star4": ["akuoumaru", "mouun's-moon", "lion's-roar", "favonius-lance", "sacrificial-fragments"],
+		"image": "https://i0.wp.com/traveler.gg/wp-content/uploads/ca62379a11258999282864d194ef6c98.jpg?resize=1080%2C533&ssl=1"
 	},
 	"Wanderlust Invocation": {
 		"Type": "Permanent",
 		"Star5W": ["amos's-bow", "skyward-harp", "lost-prayers-to-the-sacred-winds", "skyward-atlas", 
 		"primordial-jade-winged-spear", "skyward-spine", "wolf's-gravestone", "skyward-pride", "skyward-blade", "aquila-favonia"],
-		"Star5C": ["tighnari", "keqing", "mona", "diluc", "jean", "qiqi"]
+		"Star5C": ["tighnari", "keqing", "mona", "diluc", "jean", "qiqi"],
+		"image": "https://static.wikia.nocookie.net/gensin-impact/images/b/bd/Wanderlust_Invocation_2020-11-11.png"
 	}
 }
