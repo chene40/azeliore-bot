@@ -4,11 +4,42 @@ A discord bot to simulate the Genshin banner system backed with statistical mode
 # Disclaimer!!!
 The statistical model forums are obtained via https://bit.ly/3ivulJ2 and https://bit.ly/3X9326k and are used primarily in the pity system of this bot. Most of the research has been done by Sengalev, G-Azure and the Genshin community. For a more comprehensive dataset, please reach out to either Sengalev or G-Azure as they will be better able to provide statistical rates and sample size. Azeliore-bot only makes use of known statistics either by the author(s) themselves or by any community support.
 
-# Tech-Stack
-This project is built using Node.js and made use of the discord.js module for configuring the bot and the fan-made genshin-api to consuming the data 
-(https://github.com/genshindev/api). A MongoDB cluster is also being implemented so users can have distinct pity across banners and secure personalized data between different accounts. This bot will eventually be deployed to achieve maximal uptime so users can play around with the bot whenever they want. More to come~ :)
+# Getting Started
+If you already have the bot on one of your servers and want to add it to another server, you can simply click the **Add to Server** button. Otherwise, you can add it to one of your servers using this link: https://bit.ly/3KMXFqe.
 
-# Definitions/Terminology! (Will be used throughout explanations)
+![addtoserver](https://user-images.githubusercontent.com/97481912/222246610-0b9138fc-d451-4a31-b8b6-06f8baab8512.png)
+
+# Available Commands
+To see a list of the available commands, you can either use the **!help** command either in DMs or in a server that the bot is in.
+
+https://user-images.githubusercontent.com/97481912/222247139-599ee8f7-d47e-455c-a336-248c875f3c8f.mp4
+
+# Setup Before Wishing
+Now before you start wishing, you should also probably set which banner you want to wish on (there are 4 banners), along with which fate selection you're wishing towards (if you decide to wish on the weapon banner).
+
+## Changing Your Current Banner Selection:
+
+https://user-images.githubusercontent.com/97481912/222249931-c2219982-7be8-4c38-8953-084bdae190a9.mp4
+
+## Changing Your Current Fate Selection:
+
+https://user-images.githubusercontent.com/97481912/222250727-7f4d21c3-a619-4da6-b534-6f08f4f8f54f.mp4
+
+
+## Wishing
+
+Hooray! You have finished setting up everything. That's right, that's all there is to set up! Now you can start wishing towards your currently selected banner (of course, each will have different promotional weapons/characters). To begin a wish, use the **!wish 1** or **!wish 10** command.
+
+https://user-images.githubusercontent.com/97481912/222251246-fa23087e-ea81-45d9-a9e0-afdf269ea79c.mp4
+
+# Tech-Stack
+This project is built using Node.js and made use of the discord.js module for configuring the bot and the fan-made genshin-js API for consuming the data 
+(https://github.com/genshindev/api). A MongoDB cluster is also being implemented so users can have distinct pity across banners and secure personalized data between different accounts. This bot has been deployed via Railway (https://railway.app/) and has a maximal uptime so users can play around with the bot whenever they want. More to come~ :)
+
+# How the Rates are Calculated (Lengthy Post Disclaimer!)
+If you are interested in how the pity system works in Genshin, feel free to read the passages below! Otherwise, thanks for checking this repo out and for playing with the bot! :)
+
+## Definitions/Terminology! (Will be used throughout explanations)
 
 1. **Banner**: The event space where you can pull for a specific character or weapon (promotional or non-promotional).
 
@@ -28,7 +59,7 @@ This project is built using Node.js and made use of the discord.js module for co
 
 9. **Mihoyo/Hoyoverse/Cognosphere PTE. LTD.**: The leading producing video game company of Genshin Impact.
 
-# Probability of Successful Pull in Promotional Character Banner
+## Probability of Successful Pull in Promotional Character Banner
 
 The promotional character/event banner features a special 5-star character that can only be obtained from this banner (i.e. not included in permanent and standard banners). Mihoyo guarantees that a 5-star will drop after 90 unsuccessful wishes. If the 5-star obtained is not the featured character, then the subsequent 5-star pull will be guaranteed to be the promotional character. That is to say, Mihoyo guarantees that the promotional character is obtained after 180 pulls. 
 
@@ -40,7 +71,7 @@ On the per-pull probability, it is seen that most singular pulls share the same 
 
 ![image](https://user-images.githubusercontent.com/97481912/212567571-6e2fb94a-5de9-4c1c-9fc8-b354bd524e54.png)
 
-# Probability of Successful Pull in Promotional Weapon Banner
+## Probability of Successful Pull in Promotional Weapon Banner
 
 The blue line in the graph represents the odds of getting a successful 5* item/character in the promotional weapon banner 
 when being compared with the standard banner (i.e. Permanent and Character banners), which is represented by the blue line.
@@ -57,10 +88,10 @@ If you were unsuccessful in obtaining the promotional 5-star weapon on the promo
 
 There is, however, a 'fates system' where you can select which weapon you want. If you indicate in the 'fates path' a weapon of choice and you did not acquire that weapon upon pulling a 5-star, you will acquire one fate point. Upon having two points accumulated, your next 5-star pull will be guaranteed to be the weapon of your choice. That is, you would require 80x3=240 total pulls, in worst case, to pull your desired weapon.
 
-# Simulating the Per-roll Success Rate
+## Simulating the Per-roll Success Rate
 ![image](https://user-images.githubusercontent.com/97481912/212567680-0c4ebd2d-34f8-4df7-ac39-cfa6e4c1e80b.png)
 
-# TLDR
+## TLDR
 - Mihoyo guarantees that you will receive a 5-star pull within 90 pulls (for promotional character and permanent banner) but many players obtain a 5-star before ever reaching this number. 
 - This number seems to appear after the 73 pull (for the character/permanent banner) and 63 (for the weapon banner) and grows proportionally based on the base-rate provided by Mihoyo for that banner (different banner have different base rates). This is referred to as soft-pity.
 - Based on simulated and real data collected from a large sample size, the rate of success appears to be roughly modelled by the expression success_rate = base_rate + max(0, (current_pity-soft_pity) * 10 * base_rate). The max function (i.e. soft pity activates) only holds true when current_pity > soft_pity. That is, your current pity must be above the speculated soft pity rate for the banner.
