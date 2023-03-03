@@ -1,4 +1,4 @@
-# Azeliore-bot
+# Azeliore-Bot
 A discord bot to simulate the Genshin banner system backed with statistical models so users can pull for free and test their luck. The banners available to wish on are those on the second-phase of version 3.3 (Raiden and Ayato rerun banners).
 
 # Motivation for Bot
@@ -105,3 +105,6 @@ There is, however, a 'fates system' where you can select which weapon you want. 
 - This number seems to appear after the 73 pull (for the character/permanent banner) and 63 (for the weapon banner) and grows proportionally based on the base-rate provided by Mihoyo for that banner (different banner have different base rates). This is referred to as soft-pity.
 - Based on simulated and real data collected from a large sample size, the rate of success appears to be roughly modelled by the expression success_rate = base_rate + max(0, (current_pity-soft_pity) * 10 * base_rate). The max function (i.e. soft pity activates) only holds true when current_pity > soft_pity. That is, your current pity must be above the speculated soft pity rate for the banner.
 - Note that in practice, an abundance of players receive a 5-star loot around the 75th pity for non-weapon banners and 65th pity for weapon banners.
+
+## Thanks for taking the time to read this ;D
+If you would like to add me on Genshin, my UID is 612964160!
